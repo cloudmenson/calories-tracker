@@ -10,7 +10,7 @@ import {
   type ChatHistoryItem,
 } from "../lib/api";
 import { cn, todayStr } from "../lib/utils";
-import type { DiaryEntry, FridgeItem, Recipe } from "../types";
+import type { DiaryEntry, Recipe } from "../types";
 import {
   Send,
   Sparkles,
@@ -504,7 +504,7 @@ export function ChatPage() {
      ═══════════════════════════════════════════════════════════════════════════ */
 
   return (
-    <div className="flex flex-col h-[100svh] bg-[var(--bg)] max-w-lg mx-auto relative">
+    <div className="flex flex-col h-[100svh] bg-[var(--bg)] w-full relative">
 
       {/* ── Minimal header ──────────────────────────────────────────────────── */}
       <header className="shrink-0 flex items-center gap-2 px-3 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2 border-b border-[var(--border)]">
@@ -526,15 +526,16 @@ export function ChatPage() {
           </p>
         </div>
 
-        {messages.length > 0 && (
-          <button
-            onClick={() => setMessages([])}
-            className="h-9 w-9 rounded-full hover:bg-[var(--surface-2)] flex items-center justify-center transition active:scale-95"
-            title="Новый чат"
-          >
-            <RotateCcw className="h-4 w-4 text-[var(--muted)]" />
-          </button>
-        )}
+        <motion.button
+          animate={{ opacity: messages.length > 0 ? 1 : 0 }}
+          transition={{ duration: 0.15 }}
+          onClick={() => setMessages([])}
+          disabled={messages.length === 0}
+          className="h-9 w-9 rounded-full hover:bg-[var(--surface-2)] flex items-center justify-center transition active:scale-95 disabled:pointer-events-none"
+          title="Новый чат"
+        >
+          <RotateCcw className="h-4 w-4 text-[var(--muted)]" />
+        </motion.button>
       </header>
 
       {/* ── Messages area ──────────────────────────────────────────────────── */}
@@ -619,15 +620,18 @@ export function ChatPage() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="mb-2 relative inline-block"
+              transition={{ duration: 0.18 }}
+              className="overflow-hidden"
             >
-              <img src={imagePreview} alt="Preview" className="h-20 rounded-xl border border-[var(--border)]" />
-              <button
-                onClick={() => setImagePreview(null)}
-                className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center shadow-sm"
-              >
-                <X className="h-3 w-3 text-[var(--muted)]" />
-              </button>
+              <div className="mb-2 relative inline-block">
+                <img src={imagePreview} alt="Фото" className="h-20 rounded-xl border border-[var(--border)]" />
+                <button
+                  onClick={() => setImagePreview(null)}
+                  className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center shadow-sm"
+                >
+                  <X className="h-3 w-3 text-[var(--muted)]" />
+                </button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -653,7 +657,6 @@ export function ChatPage() {
             ref={fileInputRef}
             type="file"
             accept="image/*"
-            capture="environment"
             className="hidden"
             onChange={handleImagePick}
           />
@@ -694,19 +697,29 @@ export function ChatPage() {
         </div>
 
         {/* Suggestion chips when chatting */}
-        {hasMessages && !isLoading && (
-          <div className="flex gap-2 mt-2 overflow-x-auto no-scrollbar pb-0.5">
-            {SUGGESTIONS.slice(0, 3).map((s) => (
-              <button
-                key={s.text}
-                onClick={() => sendMessage(s.text)}
-                className="shrink-0 text-xs rounded-full border border-[var(--border)] px-3 py-1.5 text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)] transition active:scale-95"
-              >
-                {s.text}
-              </button>
-            ))}
-          </div>
-        )}
+        <AnimatePresence>
+          {hasMessages && !isLoading && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <div className="flex gap-2 mt-2 overflow-x-auto no-scrollbar pb-0.5">
+                {SUGGESTIONS.slice(0, 3).map((s) => (
+                  <button
+                    key={s.text}
+                    onClick={() => sendMessage(s.text)}
+                    className="shrink-0 text-xs rounded-full border border-[var(--border)] px-3 py-1.5 text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)] transition active:scale-95"
+                  >
+                    {s.text}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
