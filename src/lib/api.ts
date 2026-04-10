@@ -125,11 +125,12 @@ export async function sendChatMessage(
   message: string,
   history: ChatHistoryItem[],
   context: AIContext | null,
+  image?: string,
 ): Promise<ChatResponse> {
   const res = await fetch(`${API_BASE}/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message, history, context }),
+    body: JSON.stringify({ message, history, context, image }),
   });
 
   if (!res.ok && res.status !== 503) {

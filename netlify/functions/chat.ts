@@ -117,10 +117,12 @@ export const handler: Handler = async (event) => {
       message,
       history = [],
       context,
+      image,
     } = body as {
       message: string;
       history: Array<{ role: "user" | "model"; text: string }>;
       context: Record<string, unknown> | null;
+      image?: string; // base64 data-url e.g. "data:image/jpeg;base64,..."
     };
 
     const genAI = new GoogleGenerativeAI(apiKey);
@@ -217,7 +219,26 @@ ${
       ],
     });
 
-    const result = await chat.sendMessage(message);
+    // Build message parts — text + optional image
+    const messageParts: Array<{ text: string } | { inlineData: { mimeType: string; data: string } }> = [];
+
+    if (image && typeof image === "string" && image.startsWith("data:")) {
+      // Extract mime type and base64 data from data-url
+      const match = image.match(/^data:(image\/\w+);base64,(.+)$/);
+      if (match) {
+        messageParts.push({
+          inlineData: { mimeType: match[1], data: match[2] },
+        });
+      }
+    }
+
+    messageParts.push({
+      text: image
+        ? `${message}\n\n(Пользователь прикрепил фото блюда/продукта. Проанализируй его: определи что это, примерный вес порции, калории, БЖУ. Предложи добавить в дневник.)`
+        : message,
+    });
+
+    const result = await chat.sendMessage(messageParts);
     const raw = result.response.text();
 
     let parsed: { text: string; actions: unknown[] };
