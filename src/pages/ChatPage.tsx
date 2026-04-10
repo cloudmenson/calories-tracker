@@ -136,9 +136,9 @@ function ActionCard({ action, state, onConfirm, onDismiss }: ActionCardProps) {
           <p className="text-sm font-semibold text-gray-900 leading-tight">
             {action.label}
           </p>
-          {action.data.name && (
+          {typeof action.data.name === "string" && action.data.name && (
             <p className="text-xs text-gray-500 mt-0.5 truncate">
-              {String(action.data.name)}
+              {action.data.name}
             </p>
           )}
           {action.data.calories !== undefined && (
