@@ -32,7 +32,7 @@ export function AppLayout() {
           </AnimatePresence>
         </main>
       )}
-      <BottomNav />
+      {!isChatPage && <BottomNav />}
     </div>
   );
 }
