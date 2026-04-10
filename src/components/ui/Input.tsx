@@ -11,7 +11,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, icon, ...props }, ref) => (
     <div className="flex flex-col gap-1.5 w-full">
       {label && (
-        <label className="text-sm font-medium text-gray-700">{label}</label>
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          {label}
+        </label>
       )}
       <div className="relative">
         {icon && (
@@ -22,8 +24,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref}
           className={cn(
-            "h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm text-gray-900 placeholder:text-gray-400",
-            "focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent focus:bg-white",
+            "h-11 w-full rounded-xl border border-gray-200 dark:border-[#27273a] bg-gray-50 dark:bg-[#1e1e2c] px-4 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600",
+            "focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent focus:bg-white dark:focus:bg-[#252538]",
             "transition-all duration-200",
             icon && "pl-10",
             error && "border-red-400 focus:ring-red-400",
@@ -47,13 +49,15 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ className, label, error, ...props }, ref) => (
     <div className="flex flex-col gap-1.5 w-full">
       {label && (
-        <label className="text-sm font-medium text-gray-700">{label}</label>
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          {label}
+        </label>
       )}
       <textarea
         ref={ref}
         className={cn(
-          "w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400",
-          "focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent focus:bg-white",
+          "w-full rounded-xl border border-gray-200 dark:border-[#27273a] bg-gray-50 dark:bg-[#1e1e2c] px-4 py-3 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600",
+          "focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent focus:bg-white dark:focus:bg-[#252538]",
           "transition-all duration-200 resize-none",
           error && "border-red-400",
           className,

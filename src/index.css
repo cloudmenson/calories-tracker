@@ -1,30 +1,209 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── CSS tokens ──────────────────────────────────────────── */
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --border: 214.3 31.8% 91.4%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
+  --bg: #f9fafb;
+  --surface: #ffffff;
+  --surface-2: #f3f4f6;
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+  color-scheme: light dark;
 }
 
+.dark {
+  --bg: #0d0d14;
+  --surface: #161622;
+  --surface-2: #1e1e2c;
+  --border: #27273a;
+  --text: #e4e4f0;
+  --muted: #7070a0;
+  color-scheme: dark;
+}
+
+/* ── Base ────────────────────────────────────────────────── */
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, sans-serif;
-  background: #f9fafb;
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
 }
 
 #root {
   min-height: 100svh;
+}
+
+/* ── Dark: backgrounds ───────────────────────────────────── */
+.dark .bg-white {
+  background-color: var(--surface) !important;
+}
+.dark .bg-gray-50 {
+  background-color: var(--bg) !important;
+}
+.dark .bg-gray-100 {
+  background-color: var(--surface-2) !important;
+}
+.dark .bg-gray-200 {
+  background-color: #27273a !important;
+}
+.dark .bg-gray-300 {
+  background-color: #333346 !important;
+}
+
+/* transparent tints stay legible */
+.dark .bg-primary-50 {
+  background-color: rgba(34, 197, 94, 0.1) !important;
+}
+.dark .bg-primary-100 {
+  background-color: rgba(34, 197, 94, 0.15) !important;
+}
+.dark .bg-green-50 {
+  background-color: rgba(34, 197, 94, 0.1) !important;
+}
+.dark .bg-blue-50 {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+.dark .bg-purple-50 {
+  background-color: rgba(168, 85, 247, 0.1) !important;
+}
+.dark .bg-orange-50 {
+  background-color: rgba(249, 115, 22, 0.1) !important;
+}
+.dark .bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+.dark .bg-yellow-50 {
+  background-color: rgba(234, 179, 8, 0.1) !important;
+}
+
+/* ── Dark: text ──────────────────────────────────────────── */
+.dark .text-gray-900 {
+  color: #e4e4f0 !important;
+}
+.dark .text-gray-800 {
+  color: #d0d0e8 !important;
+}
+.dark .text-gray-700 {
+  color: #b0b0cc !important;
+}
+.dark .text-gray-600 {
+  color: #9090b0 !important;
+}
+.dark .text-gray-500 {
+  color: #7070a0 !important;
+}
+.dark .text-gray-400 {
+  color: #606080 !important;
+}
+.dark .text-gray-300 {
+  color: #4a4a6a !important;
+}
+.dark .text-gray-200 {
+  color: #353550 !important;
+}
+
+/* ── Dark: borders ───────────────────────────────────────── */
+.dark .border-gray-50 {
+  border-color: #1e1e2c !important;
+}
+.dark .border-gray-100 {
+  border-color: var(--border) !important;
+}
+.dark .border-gray-200 {
+  border-color: var(--border) !important;
+}
+.dark .border-gray-300 {
+  border-color: #333346 !important;
+}
+.dark .border-green-200 {
+  border-color: rgba(34, 197, 94, 0.3) !important;
+}
+.dark .border-blue-200 {
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+.dark .border-purple-200 {
+  border-color: rgba(168, 85, 247, 0.3) !important;
+}
+.dark .border-orange-200 {
+  border-color: rgba(249, 115, 22, 0.3) !important;
+}
+.dark .border-dashed {
+  border-color: #333346 !important;
+}
+
+/* ── Dark: dividers ──────────────────────────────────────── */
+.dark .divide-gray-100 > * + * {
+  border-color: var(--border) !important;
+}
+
+/* ── Dark: hover ─────────────────────────────────────────── */
+.dark .hover\:bg-gray-50:hover {
+  background-color: var(--surface-2) !important;
+}
+.dark .hover\:bg-gray-100:hover {
+  background-color: #27273a !important;
+}
+.dark .hover\:bg-gray-200:hover {
+  background-color: #333346 !important;
+}
+.dark .hover\:bg-gray-300:hover {
+  background-color: #3d3d50 !important;
+}
+.dark .hover\:bg-red-50:hover {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+}
+
+/* ── Dark: shadows ───────────────────────────────────────── */
+.dark .shadow-soft {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.55) !important;
+}
+.dark .shadow-card {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.65) !important;
+}
+
+/* ── Dark: gradient stops (used in empty-state screens) ──── */
+.dark .from-primary-50 {
+  --tw-gradient-from: rgba(34, 197, 94, 0.06) !important;
+}
+.dark .to-white {
+  --tw-gradient-to: var(--bg) !important;
+}
+
+/* ── Dark: Recharts ──────────────────────────────────────── */
+.dark .recharts-cartesian-grid-horizontal line,
+.dark .recharts-cartesian-grid-vertical line {
+  stroke: #27273a;
+}
+.dark .recharts-text {
+  fill: #606080;
+}
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* ── Dark: scrollbar ─────────────────────────────────────── */
+.dark ::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.dark ::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #333346;
+  border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #44445a;
 }
