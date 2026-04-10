@@ -220,7 +220,9 @@ ${
     });
 
     // Build message parts — text + optional image
-    const messageParts: Array<{ text: string } | { inlineData: { mimeType: string; data: string } }> = [];
+    const messageParts: Array<
+      { text: string } | { inlineData: { mimeType: string; data: string } }
+    > = [];
 
     if (image && typeof image === "string" && image.startsWith("data:")) {
       // Extract mime type and base64 data from data-url
