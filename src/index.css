@@ -28,6 +28,7 @@
 /* ── Base ────────────────────────────────────────────────── */
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -36,11 +37,20 @@ body {
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
 }
 
 #root {
   min-height: 100svh;
 }
+
+/* ── Utility: hide scrollbar ─────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Safe area padding ───────────────────────────────────── */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0.5rem); }
+.pt-safe { padding-top: env(safe-area-inset-top, 0); }
 
 /* ── Dark: backgrounds ───────────────────────────────────── */
 .dark .bg-white {

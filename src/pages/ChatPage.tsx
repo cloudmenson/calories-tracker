@@ -537,18 +537,18 @@ export function ChatPage() {
 
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-primary-50 to-white p-8 text-center">
+      <div className="flex flex-col items-center justify-center h-[100svh] bg-gray-50 dark:bg-[#0d0d14] p-8 text-center">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200 }}
-          className="h-24 w-24 bg-gradient-to-br from-primary-400 to-emerald-600 rounded-full flex items-center justify-center mb-5 shadow-glow"
+          className="h-24 w-24 bg-gradient-to-br from-primary-400 to-emerald-600 rounded-3xl flex items-center justify-center mb-5 shadow-lg"
         >
           <Bot className="h-12 w-12 text-white" />
         </motion.div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">NutriAI</h2>
-        <p className="text-gray-500 mb-1">Ваш персональный AI-диетолог</p>
-        <p className="text-sm text-gray-400">Создайте профиль чтобы начать</p>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">NutriAI</h2>
+        <p className="text-gray-500 dark:text-gray-400 mb-1">Ваш персональный AI-диетолог</p>
+        <p className="text-sm text-gray-400 dark:text-gray-500">Создайте профиль чтобы начать</p>
       </div>
     );
   }
@@ -556,26 +556,26 @@ export function ChatPage() {
   // ─── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 max-w-lg mx-auto">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-primary-500 to-emerald-500 px-4 pt-12 pb-4 shrink-0 shadow-md">
+    <div className="flex flex-col h-[100svh] bg-gray-50 dark:bg-[#0d0d14] max-w-lg mx-auto relative">
+      {/* Header — fixed gradient bar */}
+      <div className="bg-gradient-to-r from-primary-500 to-emerald-500 px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 shrink-0 shadow-md">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center shadow">
             <Bot className="h-5 w-5 text-white" />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <h1 className="text-white font-bold text-base">NutriAI</h1>
               <div className="h-2 w-2 rounded-full bg-green-300 animate-pulse" />
             </div>
-            <p className="text-white/70 text-xs">
-              Gemini 1.5 Flash · Персональный диетолог
+            <p className="text-white/70 text-xs truncate">
+              Персональный AI-диетолог
             </p>
           </div>
           {messages.length > 0 && (
             <button
               onClick={() => setMessages([])}
-              className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
+              className="h-9 w-9 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors active:scale-95"
               title="Очистить чат"
             >
               <RefreshCw className="h-4 w-4 text-white" />
@@ -584,7 +584,7 @@ export function ChatPage() {
         </div>
 
         {/* Context pill */}
-        <div className="mt-3 flex items-center gap-2 bg-white/15 rounded-full px-3 py-1.5 w-fit">
+        <div className="mt-2.5 flex items-center gap-2 bg-white/15 rounded-full px-3 py-1.5 w-fit">
           <Flame className="h-3 w-3 text-white/80" />
           <span className="text-white/90 text-xs font-medium">
             Сегодня: {Math.round(buildAIContext()?.todayCalories ?? 0)} /{" "}
@@ -593,11 +593,11 @@ export function ChatPage() {
         </div>
       </div>
 
-      {/* Messages area */}
+      {/* Messages area — takes all available space */}
       <div
         ref={scrollAreaRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto px-4 py-4 scroll-smooth"
+        className="flex-1 overflow-y-auto px-4 py-4 scroll-smooth overscroll-contain"
       >
         {/* Welcome state */}
         {!hasMessages && (
@@ -609,21 +609,21 @@ export function ChatPage() {
             <div className="h-16 w-16 bg-gradient-to-br from-primary-400 to-emerald-500 rounded-2xl flex items-center justify-center mb-4 shadow-glow">
               <Sparkles className="h-8 w-8 text-white" />
             </div>
-            <h3 className="font-bold text-gray-900 text-lg mb-1">
+            <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg mb-1">
               Привет, {user.name.split(" ")[0]}! 👋
             </h3>
-            <p className="text-gray-500 text-sm max-w-xs leading-relaxed">
+            <p className="text-gray-500 dark:text-gray-400 text-sm max-w-xs leading-relaxed">
               Я знаю твой профиль, что в холодильнике и что ты уже съел сегодня.
               Спроси что угодно!
             </p>
 
             {/* Suggestion chips */}
-            <div className="mt-5 flex flex-wrap gap-2 justify-center">
+            <div className="mt-5 flex flex-wrap gap-2 justify-center px-2">
               {SUGGESTIONS.map((s) => (
                 <button
                   key={s.text}
                   onClick={() => sendMessage(s.text)}
-                  className="flex items-center gap-1.5 bg-white dark:bg-[#1e1e2c] border border-gray-200 rounded-full px-3 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:border-primary-300 hover:text-primary-700 transition-all active:scale-95 shadow-soft"
+                  className="flex items-center gap-1.5 bg-white dark:bg-[#1e1e2c] border border-gray-200 dark:border-[#27273a] rounded-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-500/10 hover:border-primary-300 dark:hover:border-primary-500/30 hover:text-primary-700 dark:hover:text-primary-400 transition-all active:scale-95 shadow-sm"
                 >
                   {s.icon}
                   {s.text}
@@ -670,23 +670,25 @@ export function ChatPage() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={scrollToBottom}
-            className="absolute bottom-24 right-5 h-9 w-9 bg-white dark:bg-[#1e1e2c] shadow-card rounded-full flex items-center justify-center border border-gray-100 dark:border-[#27273a] hover:bg-gray-50 dark:hover:bg-[#27273a] transition-colors z-10"
+            className="absolute bottom-28 right-4 h-9 w-9 bg-white dark:bg-[#1e1e2c] shadow-lg rounded-full flex items-center justify-center border border-gray-200 dark:border-[#27273a] hover:bg-gray-50 dark:hover:bg-[#27273a] transition-colors z-10"
           >
-            <ChevronDown className="h-4 w-4 text-gray-600" />
+            <ChevronDown className="h-4 w-4 text-gray-600 dark:text-gray-400" />
           </motion.button>
         )}
       </AnimatePresence>
 
-      {/* Input bar */}
-      <div className="shrink-0 bg-white dark:bg-[#161622] border-t border-gray-100 dark:border-[#27273a] px-3 py-3 pb-safe">
-        {/* Context suggestions when chat active */}
+      {/* Input bar — pinned to bottom with safe-area */}
+      <div className="shrink-0 bg-white/80 dark:bg-[#161622]/80 backdrop-blur-xl border-t border-gray-100/60 dark:border-[#27273a]/60 px-3 pt-2 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+        style={{ WebkitBackdropFilter: "blur(20px)" }}
+      >
+        {/* Quick suggestions when chat active */}
         {hasMessages && !isLoading && (
-          <div className="flex gap-2 mb-2 overflow-x-auto no-scrollbar pb-1">
+          <div className="flex gap-2 mb-2 overflow-x-auto no-scrollbar">
             {SUGGESTIONS.slice(0, 4).map((s) => (
               <button
                 key={s.text}
                 onClick={() => sendMessage(s.text)}
-                className="shrink-0 flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-full px-2.5 py-1 text-xs text-gray-600 hover:bg-primary-50 hover:border-primary-300 hover:text-primary-700 transition-all"
+                className="shrink-0 flex items-center gap-1 bg-gray-100 dark:bg-[#1e1e2c] border border-gray-200 dark:border-[#27273a] rounded-full px-2.5 py-1 text-xs text-gray-600 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-500/10 hover:border-primary-300 dark:hover:border-primary-500/30 hover:text-primary-700 dark:hover:text-primary-400 transition-all"
               >
                 {s.icon}
                 {s.text.length > 22 ? s.text.slice(0, 22) + "…" : s.text}
@@ -704,19 +706,19 @@ export function ChatPage() {
             placeholder="Спроси что угодно про питание..."
             disabled={isLoading}
             className={cn(
-              "flex-1 h-11 rounded-2xl bg-gray-50 dark:bg-[#1e1e2c] border border-gray-200 dark:border-[#27273a] px-4 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600",
-              "focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:focus:bg-[#252538] transition-all",
-              isLoading && "opacity-60",
+              "flex-1 h-11 rounded-2xl bg-gray-100 dark:bg-[#1e1e2c] border border-gray-200 dark:border-[#27273a] px-4 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600",
+              "focus:outline-none focus:ring-2 focus:ring-primary-400/50 focus:border-primary-400 focus:bg-white dark:focus:bg-[#252538] transition-all",
+              isLoading && "opacity-50",
             )}
           />
           <button
             onClick={() => sendMessage(input)}
             disabled={!input.trim() || isLoading}
             className={cn(
-              "h-11 w-11 rounded-2xl flex items-center justify-center transition-all active:scale-95",
+              "h-11 w-11 rounded-2xl flex items-center justify-center transition-all active:scale-95 shrink-0",
               input.trim() && !isLoading
-                ? "bg-primary-500 text-white shadow-glow hover:bg-primary-600"
-                : "bg-gray-100 dark:bg-[#27273a] text-gray-300 cursor-not-allowed",
+                ? "bg-primary-500 text-white shadow-md hover:bg-primary-600"
+                : "bg-gray-100 dark:bg-[#27273a] text-gray-300 dark:text-gray-600 cursor-not-allowed",
             )}
           >
             {isLoading ? (

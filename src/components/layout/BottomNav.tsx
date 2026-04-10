@@ -2,7 +2,6 @@ import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   BookOpen,
-  Refrigerator,
   BarChart3,
   CalendarDays,
   MessageCircle,
@@ -15,50 +14,51 @@ const navItems = [
   { to: "/diary", icon: CalendarDays, label: "Дневник" },
   { to: "/chat", icon: MessageCircle, label: "AI Чат" },
   { to: "/recipes", icon: BookOpen, label: "Рецепты" },
-  { to: "/fridge", icon: Refrigerator, label: "Холодильник" },
   { to: "/analytics", icon: BarChart3, label: "Анализ" },
 ];
 
 export function BottomNav() {
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   return (
-    <div className="fixed bottom-5 left-0 right-0 z-40 flex justify-center pointer-events-none px-4">
+    <div className="fixed bottom-0 left-0 right-0 z-40 flex justify-center pointer-events-none pb-[max(0.5rem,env(safe-area-inset-bottom))] px-4">
       <nav
-        className="pointer-events-auto flex items-center gap-1 px-3 py-2 rounded-[2rem]
-          bg-white/60 dark:bg-[#161622]/80 backdrop-blur-2xl
-          border border-white/70 dark:border-white/[0.07]
-          shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8)]
-          dark:shadow-[0_8px_32px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.05)]"
+        className={cn(
+          "pointer-events-auto flex items-center justify-around w-full max-w-lg",
+          "px-2 py-1.5 rounded-2xl",
+          "bg-white/70 dark:bg-[#161622]/80 backdrop-blur-2xl",
+          "border border-white/60 dark:border-white/[0.06]",
+          "shadow-[0_4px_24px_rgba(0,0,0,0.08),0_1px_4px_rgba(0,0,0,0.04)]",
+          "dark:shadow-[0_4px_24px_rgba(0,0,0,0.5)]",
+        )}
         style={{ WebkitBackdropFilter: "blur(24px)" }}
       >
         {navItems.map(({ to, icon: Icon, label }) => {
-          const active = location.pathname === to;
+          const active = pathname === to;
           return (
             <NavLink
               key={to}
               to={to}
-              className="relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-[1.5rem]"
+              className="relative flex flex-col items-center justify-center min-w-[3.5rem] py-1.5 px-2 rounded-xl"
             >
               {active && (
                 <motion.div
                   layoutId="nav-pill"
-                  className="absolute inset-0 bg-primary-500/15 dark:bg-primary-500/20 rounded-[1.5rem]"
-                  transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                  className="absolute inset-0 bg-primary-500/12 dark:bg-primary-500/20 rounded-xl"
+                  transition={{ type: "spring", stiffness: 500, damping: 35 }}
                 />
               )}
               <Icon
                 className={cn(
-                  "h-[22px] w-[22px] relative z-10 transition-all duration-200",
-                  active
-                    ? "text-primary-600 drop-shadow-[0_0_6px_rgba(99,102,241,0.5)]"
-                    : "text-gray-400/80",
+                  "h-5 w-5 relative z-10 transition-colors duration-200",
+                  active ? "text-primary-600 dark:text-primary-400" : "text-gray-400 dark:text-gray-500",
                 )}
+                strokeWidth={active ? 2.2 : 1.8}
               />
               <span
                 className={cn(
-                  "text-[9px] font-semibold tracking-wide relative z-10 transition-colors duration-200",
-                  active ? "text-primary-600" : "text-gray-400/70",
+                  "text-[10px] font-medium relative z-10 mt-0.5 transition-colors duration-200",
+                  active ? "text-primary-600 dark:text-primary-400" : "text-gray-400 dark:text-gray-500",
                 )}
               >
                 {label}

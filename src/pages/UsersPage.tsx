@@ -114,13 +114,13 @@ export function UsersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50 dark:from-primary-500/5 dark:via-[#0d0d14] dark:to-blue-500/5 p-5">
+    <div className="min-h-[100svh] bg-gray-50 dark:bg-[#0d0d14] p-5">
       <div className="max-w-lg mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 pt-4">
+        <div className="flex items-center justify-between mb-6 pt-[max(1rem,env(safe-area-inset-top))]">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Профили</h1>
-            <p className="text-sm text-gray-500 mt-0.5">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Профили</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
               Выберите или создайте профиль
             </p>
           </div>

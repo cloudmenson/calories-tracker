@@ -32,6 +32,7 @@ import {
   Camera,
   Target,
   TrendingUp,
+  Refrigerator,
 } from "lucide-react";
 import {
   calculateBMR,
@@ -126,22 +127,22 @@ export function DashboardPage() {
 
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-primary-50 to-white p-8 text-center">
+      <div className="flex flex-col items-center justify-center min-h-[80svh] p-8 text-center">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200 }}
-          className="h-28 w-28 bg-primary-100 rounded-full flex items-center justify-center mb-6"
+          className="h-24 w-24 bg-gradient-to-br from-primary-400 to-emerald-500 rounded-3xl flex items-center justify-center mb-6 shadow-lg"
         >
-          <Flame className="h-14 w-14 text-primary-500" />
+          <Flame className="h-12 w-12 text-white" />
         </motion.div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           Добро пожаловать!
         </h2>
-        <p className="text-gray-500 mb-6">
+        <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-xs">
           Создайте профиль чтобы начать отслеживать питание
         </p>
-        <Button onClick={() => navigate("/users")}>
+        <Button onClick={() => navigate("/users")} className="px-6">
           <Plus className="h-4 w-4" /> Создать профиль
         </Button>
       </div>
@@ -153,13 +154,13 @@ export function DashboardPage() {
   const remaining = goalCal - totals.calories;
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div>
       <TopBar
         title="Главная"
         right={
           <Dialog open={addOpen} onOpenChange={setAddOpen}>
             <DialogTrigger asChild>
-              <Button size="icon-sm">
+              <Button size="icon-sm" variant="outline">
                 <Plus className="h-4 w-4" />
               </Button>
             </DialogTrigger>
@@ -169,7 +170,7 @@ export function DashboardPage() {
               </DialogHeader>
               <form
                 onSubmit={handleSubmit(onQuickAdd)}
-                className="flex flex-col gap-4"
+                className="flex flex-col gap-3"
               >
                 <Input
                   label="Название"
@@ -217,7 +218,7 @@ export function DashboardPage() {
                     {...register("carbs")}
                   />
                 </div>
-                <Button type="submit">Добавить</Button>
+                <Button type="submit" className="mt-1">Добавить</Button>
               </form>
             </DialogContent>
           </Dialog>
@@ -385,6 +386,43 @@ export function DashboardPage() {
                   Цель: {user.goalWeight} кг
                 </p>
               )}
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Quick links */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12 }}
+          className="grid grid-cols-2 gap-3"
+        >
+          <Card
+            className="cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => navigate("/fridge")}
+          >
+            <CardContent className="p-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                <Refrigerator className="h-5 w-5 text-blue-500" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-900">Холодильник</p>
+                <p className="text-xs text-gray-400">Продукты</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card
+            className="cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => navigate("/recipes")}
+          >
+            <CardContent className="p-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-purple-50 flex items-center justify-center">
+                <Camera className="h-5 w-5 text-purple-500" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-900">Рецепты</p>
+                <p className="text-xs text-gray-400">Блюда</p>
+              </div>
             </CardContent>
           </Card>
         </motion.div>
