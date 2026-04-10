@@ -218,7 +218,9 @@ export function DashboardPage() {
                     {...register("carbs")}
                   />
                 </div>
-                <Button type="submit" className="mt-1">Добавить</Button>
+                <Button type="submit" className="mt-1">
+                  Добавить
+                </Button>
               </form>
             </DialogContent>
           </Dialog>
@@ -406,7 +408,9 @@ export function DashboardPage() {
                 <Refrigerator className="h-5 w-5 text-blue-500" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900">Холодильник</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  Холодильник
+                </p>
                 <p className="text-xs text-gray-400">Продукты</p>
               </div>
             </CardContent>

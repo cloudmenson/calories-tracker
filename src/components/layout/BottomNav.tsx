@@ -51,14 +51,18 @@ export function BottomNav() {
               <Icon
                 className={cn(
                   "h-5 w-5 relative z-10 transition-colors duration-200",
-                  active ? "text-primary-600 dark:text-primary-400" : "text-gray-400 dark:text-gray-500",
+                  active
+                    ? "text-primary-600 dark:text-primary-400"
+                    : "text-gray-400 dark:text-gray-500",
                 )}
                 strokeWidth={active ? 2.2 : 1.8}
               />
               <span
                 className={cn(
                   "text-[10px] font-medium relative z-10 mt-0.5 transition-colors duration-200",
-                  active ? "text-primary-600 dark:text-primary-400" : "text-gray-400 dark:text-gray-500",
+                  active
+                    ? "text-primary-600 dark:text-primary-400"
+                    : "text-gray-400 dark:text-gray-500",
                 )}
               >
                 {label}

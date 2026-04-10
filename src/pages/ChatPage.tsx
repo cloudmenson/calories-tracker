@@ -546,9 +546,15 @@ export function ChatPage() {
         >
           <Bot className="h-12 w-12 text-white" />
         </motion.div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">NutriAI</h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-1">Ваш персональный AI-диетолог</p>
-        <p className="text-sm text-gray-400 dark:text-gray-500">Создайте профиль чтобы начать</p>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+          NutriAI
+        </h2>
+        <p className="text-gray-500 dark:text-gray-400 mb-1">
+          Ваш персональный AI-диетолог
+        </p>
+        <p className="text-sm text-gray-400 dark:text-gray-500">
+          Создайте профиль чтобы начать
+        </p>
       </div>
     );
   }
@@ -678,7 +684,8 @@ export function ChatPage() {
       </AnimatePresence>
 
       {/* Input bar — pinned to bottom with safe-area */}
-      <div className="shrink-0 bg-white/80 dark:bg-[#161622]/80 backdrop-blur-xl border-t border-gray-100/60 dark:border-[#27273a]/60 px-3 pt-2 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+      <div
+        className="shrink-0 bg-white/80 dark:bg-[#161622]/80 backdrop-blur-xl border-t border-gray-100/60 dark:border-[#27273a]/60 px-3 pt-2 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
         style={{ WebkitBackdropFilter: "blur(20px)" }}
       >
         {/* Quick suggestions when chat active */}

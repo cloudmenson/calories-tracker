@@ -45,12 +45,21 @@ body {
 }
 
 /* ── Utility: hide scrollbar ─────────────────────────────── */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 /* ── Safe area padding ───────────────────────────────────── */
-.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0.5rem); }
-.pt-safe { padding-top: env(safe-area-inset-top, 0); }
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0);
+}
 
 /* ── Dark: backgrounds ───────────────────────────────────── */
 .dark .bg-white {

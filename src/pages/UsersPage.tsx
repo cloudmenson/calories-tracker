@@ -119,7 +119,9 @@ export function UsersPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6 pt-[max(1rem,env(safe-area-inset-top))]">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Профили</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              Профили
+            </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
               Выберите или создайте профиль
             </p>

@@ -56,7 +56,9 @@ export function TopBar({ title, showBack, right, transparent }: TopBarProps) {
                 className="h-full w-full object-cover"
               />
             ) : activeUser ? (
-              <span className="text-xs font-bold">{activeUser.name[0].toUpperCase()}</span>
+              <span className="text-xs font-bold">
+                {activeUser.name[0].toUpperCase()}
+              </span>
             ) : (
               <User className="h-4 w-4" />
             )}
