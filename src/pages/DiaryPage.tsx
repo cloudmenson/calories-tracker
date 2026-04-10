@@ -243,7 +243,7 @@ export function DiaryPage() {
                       key={label}
                       className={`${color} rounded-xl p-2.5 text-center`}
                     >
-                      <p className="text-[10px] font-medium opacity-70">
+                      <p className="text-xs font-medium opacity-70">
                         {label}
                       </p>
                       <p className="text-sm font-bold leading-tight">{val}</p>

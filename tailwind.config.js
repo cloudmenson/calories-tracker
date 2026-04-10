@@ -39,6 +39,10 @@ export default {
         "2xl": "1.5rem",
         "3xl": "2rem",
       },
+      fontSize: {
+        // Override xs to 14px — prevents Safari auto-zoom (was 12px)
+        xs: ["0.875rem", { lineHeight: "1.25rem" }],
+      },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
       },

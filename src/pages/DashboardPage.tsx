@@ -280,7 +280,7 @@ export function DashboardPage() {
                     <span className="text-lg font-bold text-gray-900 leading-none">
                       {formatCalories(totals.calories)}
                     </span>
-                    <span className="text-[10px] text-gray-400">ккал</span>
+                    <span className="text-xs text-gray-400">ккал</span>
                   </div>
                 </div>
                 <div className="flex-1">

@@ -478,25 +478,25 @@ export function RecipesPage() {
               {ingredients.length > 0 && (
                 <div className="bg-primary-50 rounded-xl p-3 grid grid-cols-4 gap-2 text-center">
                   <div>
-                    <p className="text-[10px] text-primary-600">Ккал</p>
+                    <p className="text-xs text-primary-600">Ккал</p>
                     <p className="text-sm font-bold text-primary-700">
                       {Math.round(totalNutrition.calories)}
                     </p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-green-600">Белки</p>
+                    <p className="text-xs text-green-600">Белки</p>
                     <p className="text-sm font-bold text-green-700">
                       {totalNutrition.protein.toFixed(1)}г
                     </p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-orange-600">Жиры</p>
+                    <p className="text-xs text-orange-600">Жиры</p>
                     <p className="text-sm font-bold text-orange-700">
                       {totalNutrition.fat.toFixed(1)}г
                     </p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-blue-600">Угл</p>
+                    <p className="text-xs text-blue-600">Угл</p>
                     <p className="text-sm font-bold text-blue-700">
                       {totalNutrition.carbs.toFixed(1)}г
                     </p>
