@@ -7,6 +7,8 @@ import type {
   Recipe,
   FridgeItem,
   DiaryEntry,
+  Chat,
+  StoredMessage,
 } from "../types";
 
 interface AppStore extends AppState {
@@ -37,6 +39,17 @@ interface AppStore extends AppState {
   addDiaryEntry: (userId: string, entry: DiaryEntry) => void;
   deleteDiaryEntry: (userId: string, id: string) => void;
 
+  // Chats
+  createChat: (userId: string, chat: Chat) => void;
+  updateChatMessages: (
+    userId: string,
+    chatId: string,
+    messages: StoredMessage[],
+  ) => void;
+  updateChatTitle: (userId: string, chatId: string, title: string) => void;
+  deleteChat: (userId: string, chatId: string) => void;
+  setActiveChatId: (chatId: string | null) => void;
+
   // Getters
   getActiveUser: () => UserProfile | null;
   getTodayEntries: (userId: string, date: string) => DiaryEntry[];
@@ -51,6 +64,8 @@ export const useAppStore = create<AppStore>()(
       recipes: {},
       fridge: {},
       diary: {},
+      chats: {},
+      activeChatId: null,
 
       addUser: (user) => set((s) => ({ users: [...s.users, user] })),
 
@@ -142,6 +157,53 @@ export const useAppStore = create<AppStore>()(
             [userId]: (s.diary[userId] ?? []).filter((e) => e.id !== id),
           },
         })),
+
+      createChat: (userId, chat) =>
+        set((s) => ({
+          chats: {
+            ...s.chats,
+            [userId]: [chat, ...(s.chats[userId] ?? [])],
+          },
+          activeChatId: chat.id,
+        })),
+
+      updateChatMessages: (userId, chatId, messages) =>
+        set((s) => ({
+          chats: {
+            ...s.chats,
+            [userId]: (s.chats[userId] ?? []).map((c) =>
+              c.id === chatId
+                ? { ...c, messages, updatedAt: new Date().toISOString() }
+                : c,
+            ),
+          },
+        })),
+
+      updateChatTitle: (userId, chatId, title) =>
+        set((s) => ({
+          chats: {
+            ...s.chats,
+            [userId]: (s.chats[userId] ?? []).map((c) =>
+              c.id === chatId ? { ...c, title } : c,
+            ),
+          },
+        })),
+
+      deleteChat: (userId, chatId) =>
+        set((s) => {
+          const remaining = (s.chats[userId] ?? []).filter(
+            (c) => c.id !== chatId,
+          );
+          return {
+            chats: { ...s.chats, [userId]: remaining },
+            activeChatId:
+              s.activeChatId === chatId
+                ? (remaining[0]?.id ?? null)
+                : s.activeChatId,
+          };
+        }),
+
+      setActiveChatId: (chatId) => set({ activeChatId: chatId }),
 
       getActiveUser: () => {
         const { users, activeUserId } = get();

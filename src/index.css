@@ -41,7 +41,9 @@ body {
 }
 
 /* ── Prevent Safari auto-zoom on focus ───────────────────── */
-input, textarea, select {
+input,
+textarea,
+select {
   font-size: 16px;
 }
 

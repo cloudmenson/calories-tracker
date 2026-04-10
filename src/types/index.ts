@@ -85,6 +85,34 @@ export interface DiaryEntry {
   createdAt: string;
 }
 
+// ─── Chat ──────────────────────────────────────────────────────────────────────
+
+export interface StoredMessage {
+  id: string;
+  role: "user" | "assistant";
+  text: string;
+  image?: string; // base64 data-url (kept only for small previews, stripped on persist if needed)
+  actions?: Array<{
+    type: string;
+    label: string;
+    data: Record<string, unknown>;
+  }>;
+  actionStates: Record<number, "pending" | "confirmed" | "dismissed">;
+  timestamp: string; // ISO string (Date is not JSON-serialisable)
+  setupRequired?: boolean;
+}
+
+export interface Chat {
+  id: string;
+  userId: string;
+  title: string; // auto-generated from first user message
+  messages: StoredMessage[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ─── App state ─────────────────────────────────────────────────────────────────
+
 export interface AppState {
   users: UserProfile[];
   activeUserId: string | null;
@@ -92,4 +120,6 @@ export interface AppState {
   recipes: Record<string, Recipe[]>; // userId -> recipes
   fridge: Record<string, FridgeItem[]>; // userId -> items
   diary: Record<string, DiaryEntry[]>; // userId -> entries
+  chats: Record<string, Chat[]>; // userId -> chats
+  activeChatId: string | null;
 }
