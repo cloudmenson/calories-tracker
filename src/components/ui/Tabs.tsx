@@ -11,7 +11,7 @@ export const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "flex items-center gap-1 rounded-xl bg-gray-100 p-1",
+      "flex items-center gap-1 rounded-xl bg-gray-100 dark:bg-[#1e1e2c] p-1",
       className,
     )}
     {...props}
@@ -26,8 +26,8 @@ export const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition-all",
-      "data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm",
+      "flex-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 transition-all",
+      "data-[state=active]:bg-white dark:data-[state=active]:bg-[#2a2a3c] data-[state=active]:text-gray-900 dark:data-[state=active]:text-gray-100 data-[state=active]:shadow-sm",
       "focus:outline-none",
       className,
     )}

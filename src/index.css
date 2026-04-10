@@ -191,6 +191,109 @@ body {
   border-color: var(--border) !important;
   color: var(--text) !important;
 }
+.dark .recharts-tooltip-item-name,
+.dark .recharts-tooltip-item-value,
+.dark .recharts-tooltip-label {
+  color: var(--text) !important;
+}
+
+/* ── Dark: SVG presentation attribute overrides ──────────── */
+/* PieChart empty arc, CartesianGrid hardcoded strokes       */
+.dark [fill="#f3f4f6"] {
+  fill: #1e1e2c !important;
+}
+.dark [fill="#f0f0f0"] {
+  fill: #27273a !important;
+}
+.dark [stroke="#f0f0f0"] {
+  stroke: #27273a !important;
+}
+
+/* ── Dark: colored text (-600/-700 too dark on dark bg) ──── */
+.dark .text-blue-600,
+.dark .text-blue-700 {
+  color: #93c5fd !important;
+}
+.dark .text-green-600,
+.dark .text-green-700 {
+  color: #86efac !important;
+}
+.dark .text-orange-600,
+.dark .text-orange-700 {
+  color: #fdba74 !important;
+}
+.dark .text-yellow-600,
+.dark .text-yellow-700 {
+  color: #fde68a !important;
+}
+.dark .text-red-600,
+.dark .text-red-700 {
+  color: #fca5a5 !important;
+}
+.dark .text-purple-600,
+.dark .text-purple-700 {
+  color: #d8b4fe !important;
+}
+.dark .text-teal-600,
+.dark .text-teal-700 {
+  color: #5eead4 !important;
+}
+.dark .text-amber-700,
+.dark .text-amber-800 {
+  color: #fcd34d !important;
+}
+.dark .text-primary-600,
+.dark .text-primary-700 {
+  color: #4ade80 !important;
+}
+
+/* ── Dark: -100 tint backgrounds (badges, macro tiles) ───── */
+.dark .bg-blue-100 {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+.dark .bg-green-100 {
+  background-color: rgba(34, 197, 94, 0.15) !important;
+}
+.dark .bg-orange-100 {
+  background-color: rgba(249, 115, 22, 0.15) !important;
+}
+.dark .bg-yellow-100 {
+  background-color: rgba(234, 179, 8, 0.15) !important;
+}
+.dark .bg-red-100 {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+}
+.dark .bg-purple-100 {
+  background-color: rgba(168, 85, 247, 0.15) !important;
+}
+.dark .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.08) !important;
+}
+.dark .border-amber-200 {
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+/* ── Dark: additional hover tints ───────────────────────── */
+.dark .hover\:bg-primary-50:hover {
+  background-color: rgba(34, 197, 94, 0.15) !important;
+}
+.dark .hover\:border-primary-300:hover {
+  border-color: rgba(34, 197, 94, 0.5) !important;
+}
+.dark .hover\:text-primary-700:hover {
+  color: #4ade80 !important;
+}
+
+/* ── Dark: gradient via/to stops ────────────────────────── */
+.dark .via-white {
+  --tw-gradient-via: var(--bg) !important;
+}
+.dark .from-white {
+  --tw-gradient-from: var(--bg) !important;
+}
+.dark .to-blue-50 {
+  --tw-gradient-to: rgba(59, 130, 246, 0.05) !important;
+}
 
 /* ── Dark: scrollbar ─────────────────────────────────────── */
 .dark ::-webkit-scrollbar {

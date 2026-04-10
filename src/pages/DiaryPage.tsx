@@ -176,12 +176,12 @@ export function DiaryPage() {
 
       <div className="px-4 py-4 max-w-lg mx-auto space-y-4">
         {/* Date Picker */}
-        <div className="flex items-center justify-between bg-white rounded-2xl shadow-soft px-4 py-3">
+        <div className="flex items-center justify-between bg-white dark:bg-[#161622] rounded-2xl shadow-soft border border-transparent dark:border-[#27273a] px-4 py-3">
           <button
             onClick={() => setDate((d) => subDays(d, 1))}
-            className="h-8 w-8 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-colors"
+            className="h-8 w-8 flex items-center justify-center rounded-xl hover:bg-gray-100 dark:hover:bg-[#27273a] transition-colors"
           >
-            <ChevronLeft className="h-4 w-4 text-gray-600" />
+            <ChevronLeft className="h-4 w-4 text-gray-600 dark:text-gray-400" />
           </button>
           <div className="text-center">
             <p className="font-bold text-gray-900 capitalize">
@@ -198,9 +198,9 @@ export function DiaryPage() {
           </div>
           <button
             onClick={() => setDate((d) => addDays(d, 1))}
-            className="h-8 w-8 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-colors"
+            className="h-8 w-8 flex items-center justify-center rounded-xl hover:bg-gray-100 dark:hover:bg-[#27273a] transition-colors"
           >
-            <ChevronRight className="h-4 w-4 text-gray-600" />
+            <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-400" />
           </button>
         </div>
 
@@ -455,7 +455,7 @@ export function DiaryPage() {
               <button
                 key={recipe.id}
                 onClick={() => logFromRecipe(recipe.id)}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-primary-50 transition-colors text-left border border-gray-100"
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-primary-50 transition-colors text-left border border-gray-100 dark:border-[#27273a] dark:hover:bg-primary-500/10"
               >
                 {recipe.photo ? (
                   <img

@@ -92,7 +92,7 @@ function TypingIndicator() {
       <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shrink-0 shadow-md">
         <Bot className="h-4 w-4 text-white" />
       </div>
-      <div className="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-soft border border-gray-100">
+      <div className="bg-white dark:bg-[#1e1e2c] rounded-2xl rounded-bl-sm px-4 py-3 shadow-soft border border-gray-100 dark:border-[#27273a]">
         <div className="flex gap-1.5 items-center h-5">
           {[0, 1, 2].map((i) => (
             <motion.div
@@ -250,7 +250,7 @@ function MessageBubble({ message, onAction, userName }: MessageBubbleProps) {
             "px-4 py-3 shadow-soft",
             isUser
               ? "bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-2xl rounded-br-sm"
-              : "bg-white border border-gray-100 text-gray-900 rounded-2xl rounded-bl-sm",
+              : "bg-white dark:bg-[#1e1e2c] border border-gray-100 dark:border-[#27273a] text-gray-900 rounded-2xl rounded-bl-sm",
           )}
         >
           {isUser ? (
@@ -623,7 +623,7 @@ export function ChatPage() {
                 <button
                   key={s.text}
                   onClick={() => sendMessage(s.text)}
-                  className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-3 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:border-primary-300 hover:text-primary-700 transition-all active:scale-95 shadow-soft"
+                  className="flex items-center gap-1.5 bg-white dark:bg-[#1e1e2c] border border-gray-200 rounded-full px-3 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:border-primary-300 hover:text-primary-700 transition-all active:scale-95 shadow-soft"
                 >
                   {s.icon}
                   {s.text}
@@ -670,7 +670,7 @@ export function ChatPage() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={scrollToBottom}
-            className="absolute bottom-24 right-5 h-9 w-9 bg-white shadow-card rounded-full flex items-center justify-center border border-gray-100 hover:bg-gray-50 transition-colors z-10"
+            className="absolute bottom-24 right-5 h-9 w-9 bg-white dark:bg-[#1e1e2c] shadow-card rounded-full flex items-center justify-center border border-gray-100 dark:border-[#27273a] hover:bg-gray-50 dark:hover:bg-[#27273a] transition-colors z-10"
           >
             <ChevronDown className="h-4 w-4 text-gray-600" />
           </motion.button>
@@ -678,7 +678,7 @@ export function ChatPage() {
       </AnimatePresence>
 
       {/* Input bar */}
-      <div className="shrink-0 bg-white border-t border-gray-100 px-3 py-3 pb-safe">
+      <div className="shrink-0 bg-white dark:bg-[#161622] border-t border-gray-100 dark:border-[#27273a] px-3 py-3 pb-safe">
         {/* Context suggestions when chat active */}
         {hasMessages && !isLoading && (
           <div className="flex gap-2 mb-2 overflow-x-auto no-scrollbar pb-1">
@@ -704,8 +704,8 @@ export function ChatPage() {
             placeholder="Спроси что угодно про питание..."
             disabled={isLoading}
             className={cn(
-              "flex-1 h-11 rounded-2xl bg-gray-50 border border-gray-200 px-4 text-sm text-gray-900 placeholder:text-gray-400",
-              "focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all",
+              "flex-1 h-11 rounded-2xl bg-gray-50 dark:bg-[#1e1e2c] border border-gray-200 dark:border-[#27273a] px-4 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600",
+              "focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white dark:focus:bg-[#252538] transition-all",
               isLoading && "opacity-60",
             )}
           />
@@ -716,7 +716,7 @@ export function ChatPage() {
               "h-11 w-11 rounded-2xl flex items-center justify-center transition-all active:scale-95",
               input.trim() && !isLoading
                 ? "bg-primary-500 text-white shadow-glow hover:bg-primary-600"
-                : "bg-gray-100 text-gray-300 cursor-not-allowed",
+                : "bg-gray-100 dark:bg-[#27273a] text-gray-300 cursor-not-allowed",
             )}
           >
             {isLoading ? (

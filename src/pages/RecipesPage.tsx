@@ -421,7 +421,7 @@ export function RecipesPage() {
             {/* Ingredients */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Ингредиенты
                 </label>
                 <div className="flex gap-2">
@@ -450,7 +450,7 @@ export function RecipesPage() {
                   {ingredients.map((ing) => (
                     <div
                       key={ing.id}
-                      className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2"
+                      className="flex items-center justify-between bg-gray-50 dark:bg-[#1e1e2c] rounded-lg px-3 py-2"
                     >
                       <span className="text-sm text-gray-800">
                         {ing.name} — {ing.amount}г
@@ -575,7 +575,7 @@ export function RecipesPage() {
                 className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-colors ${
                   selectedFridge.includes(item.id)
                     ? "border-primary-500 bg-primary-50"
-                    : "border-gray-100 hover:bg-gray-50"
+                    : "border-gray-100 dark:border-[#27273a] hover:bg-gray-50"
                 }`}
               >
                 <input

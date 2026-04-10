@@ -114,7 +114,7 @@ export function UsersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50 p-5">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50 dark:from-primary-500/5 dark:via-[#0d0d14] dark:to-blue-500/5 p-5">
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8 pt-4">
@@ -184,7 +184,7 @@ export function UsersPage() {
                             className={`h-11 rounded-xl border-2 text-sm font-medium transition-all ${
                               field.value === g
                                 ? "border-primary-500 bg-primary-50 text-primary-700"
-                                : "border-gray-200 text-gray-600 hover:bg-gray-50"
+                                : "border-gray-200 dark:border-[#27273a] text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#1e1e2c]"
                             }`}
                           >
                             {g === "male" ? "👨 Мужской" : "👩 Женский"}
@@ -300,7 +300,7 @@ export function UsersPage() {
               animate={{ opacity: 1 }}
               className="flex flex-col items-center justify-center py-16 text-center"
             >
-              <div className="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+              <div className="h-20 w-20 bg-gray-100 dark:bg-[#1e1e2c] rounded-full flex items-center justify-center mb-4">
                 <User className="h-10 w-10 text-gray-300" />
               </div>
               <p className="text-gray-500 font-medium">Нет профилей</p>
