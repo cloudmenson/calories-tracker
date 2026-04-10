@@ -11,10 +11,6 @@
   targetPort = 5173
   port = 8888
 
-[functions]
-  node_bundler = "esbuild"
-  included_files = ["netlify/functions/**"]
-
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
@@ -24,6 +20,3 @@
   from = "/*"
   to = "/index.html"
   status = 200
-
-[context.production.environment]
-  NODE_ENV = "production"
