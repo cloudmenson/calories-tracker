@@ -13,7 +13,7 @@ export function AppLayout() {
   const isChatPage = pathname === "/chat";
 
   return (
-    <div className="h-full bg-gray-50 dark:bg-[#0d0d14] flex flex-col max-w-lg mx-auto relative overflow-x-hidden">
+    <div className="min-h-[100svh] bg-gray-50 dark:bg-[#0d0d14] flex flex-col max-w-lg mx-auto relative overflow-x-hidden">
       {isChatPage ? (
         <Outlet />
       ) : (
