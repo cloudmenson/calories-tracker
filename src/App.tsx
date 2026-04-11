@@ -7,8 +7,10 @@ import { FridgePage } from "./pages/FridgePage";
 import { AnalyticsPage } from "./pages/AnalyticsPage";
 import { UsersPage } from "./pages/UsersPage";
 import { ChatPage } from "./pages/ChatPage";
+import { useSyncWithMongo } from "./lib/sync";
 
 function App() {
+  useSyncWithMongo();
   return (
     <BrowserRouter>
       <Routes>
