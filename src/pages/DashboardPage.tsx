@@ -37,12 +37,8 @@ const mealLabels: Record<MealType, { label: string; emoji: string }> = {
 
 export function DashboardPage() {
   const navigate = useNavigate();
-  const {
-    getActiveUser,
-    getTodayEntries,
-    activeUserId,
-    weightHistory,
-  } = useAppStore();
+  const { getActiveUser, getTodayEntries, activeUserId, weightHistory } =
+    useAppStore();
   const [logOpen, setLogOpen] = useState(false);
 
   const user = getActiveUser();
@@ -99,10 +95,7 @@ export function DashboardPage() {
   return (
     <div className="relative">
       <TopBar title="Главная" />
-      <QuickLogSheet
-        isOpen={logOpen}
-        onClose={() => setLogOpen(false)}
-      />
+      <QuickLogSheet isOpen={logOpen} onClose={() => setLogOpen(false)} />
 
       <div className="px-4 py-4 space-y-4 max-w-lg mx-auto">
         {/* Greeting */}
@@ -207,14 +200,21 @@ export function DashboardPage() {
                     icon: <Wheat className="h-3.5 w-3.5" />,
                   },
                 ].map(({ label, value, color, bg, icon }) => (
-                  <div key={label} className={`${bg} rounded-xl p-2.5 text-center`}>
-                    <div className={`flex items-center justify-center gap-1 ${color} mb-0.5`}>
+                  <div
+                    key={label}
+                    className={`${bg} rounded-xl p-2.5 text-center`}
+                  >
+                    <div
+                      className={`flex items-center justify-center gap-1 ${color} mb-0.5`}
+                    >
                       {icon}
                       <span className="text-xs font-medium">{label}</span>
                     </div>
                     <p className={`text-base font-bold ${color}`}>
                       {value.toFixed(1)}
-                      <span className="text-xs font-normal text-[--muted]">г</span>
+                      <span className="text-xs font-normal text-[--muted]">
+                        г
+                      </span>
                     </p>
                   </div>
                 ))}
@@ -286,7 +286,9 @@ export function DashboardPage() {
                 <Refrigerator className="h-5 w-5 text-blue-400" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-[--text]">Холодильник</p>
+                <p className="text-sm font-semibold text-[--text]">
+                  Холодильник
+                </p>
                 <p className="text-xs text-[--muted]">Продукты</p>
               </div>
             </CardContent>
