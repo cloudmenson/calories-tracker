@@ -74,23 +74,20 @@ export const handler: Handler = async (event) => {
     : promptText;
 
   try {
-    const res = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: groqModel,
-          messages: [{ role: "user", content: userContent }],
-          ...(hasImage ? {} : { response_format: { type: "json_object" } }),
-          temperature: 0.3,
-          max_tokens: 512,
-        }),
+    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({
+        model: groqModel,
+        messages: [{ role: "user", content: userContent }],
+        ...(hasImage ? {} : { response_format: { type: "json_object" } }),
+        temperature: 0.3,
+        max_tokens: 512,
+      }),
+    });
 
     if (!res.ok) throw new Error(await res.text());
 
@@ -98,9 +95,7 @@ export const handler: Handler = async (event) => {
       choices: Array<{ message: { content: string } }>;
     };
     const raw = data.choices[0].message.content.trim();
-    const clean = raw
-      .replace(/^```(?:json)?\s*/i, "")
-      .replace(/\s*```$/i, "");
+    const clean = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
     const parsed = JSON.parse(clean) as unknown;
     return {
       statusCode: 200,

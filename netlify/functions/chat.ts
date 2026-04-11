@@ -103,7 +103,7 @@ export const handler: Handler = async (event) => {
       statusCode: 503,
       headers: CORS_HEADERS,
       body: JSON.stringify({
-        text: '⚠️ **GROQ_API_KEY не настроен**. Добавь ключ из console.groq.com в Netlify → Environment Variables.',
+        text: "⚠️ **GROQ_API_KEY не настроен**. Добавь ключ из console.groq.com в Netlify → Environment Variables.",
         actions: [],
         setupRequired: true,
       }),
