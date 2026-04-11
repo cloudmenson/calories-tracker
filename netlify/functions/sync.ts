@@ -48,10 +48,18 @@ export const handler: Handler = async (event) => {
       const { chats, activeChatId, ...rest } = state as Record<string, unknown>;
       await col.replaceOne(
         { _id: DOC_ID as unknown as never },
-        { _id: DOC_ID as unknown as never, ...rest, updatedAt: new Date().toISOString() },
+        {
+          _id: DOC_ID as unknown as never,
+          ...rest,
+          updatedAt: new Date().toISOString(),
+        },
         { upsert: true },
       );
-      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
+      return {
+        statusCode: 200,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({ ok: true }),
+      };
     }
 
     return { statusCode: 405, headers: CORS_HEADERS, body: "" };

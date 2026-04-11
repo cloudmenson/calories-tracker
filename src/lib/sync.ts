@@ -11,7 +11,7 @@ export async function loadRemoteState(): Promise<void> {
   try {
     const res = await fetch(`${API_BASE}/sync`);
     if (!res.ok || res.status === 204) return; // not configured or empty
-    const remote = await res.json() as Record<string, unknown>;
+    const remote = (await res.json()) as Record<string, unknown>;
     if (!remote || typeof remote !== "object") return;
 
     // Merge: remote wins for users/diary/recipes/fridge/weights
