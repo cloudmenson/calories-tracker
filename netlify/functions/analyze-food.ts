@@ -1,5 +1,4 @@
 import type { Handler } from "@netlify/functions";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -21,43 +20,31 @@ export const handler: Handler = async (event) => {
     };
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
     return {
       statusCode: 503,
       headers: CORS_HEADERS,
-      body: JSON.stringify({ error: "GEMINI_API_KEY не настроен" }),
+      body: JSON.stringify({ error: "GROQ_API_KEY не настроен" }),
     };
   }
 
   const body = JSON.parse(event.body || "{}");
   const { image, weight, goalCalories = 2000, todayCalories = 0 } = body;
   const remaining = goalCalories - todayCalories;
-
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash-lite",
-    generationConfig: {
-      responseMimeType: "application/json",
-      temperature: 0.3,
-    },
-  });
-
-  type Part =
-    | { text: string }
-    | { inlineData: { mimeType: string; data: string } };
-
-  const parts: Part[] = [];
-
-  if (image && typeof image === "string" && image.startsWith("data:")) {
-    const match = image.match(/^data:(image\/\w+);base64,(.+)$/s);
-    if (match) {
-      parts.push({ inlineData: { mimeType: match[1], data: match[2] } });
-    }
-  }
-
   const w = Number(weight) || 100;
-  const prompt = `Ты нутрициолог-аналитик. Посмотри на фото и определи что за блюдо или продукт. Рассчитай его калорийность и БЖУ для веса ${w}г.
+
+  const hasImage =
+    image && typeof image === "string" && image.startsWith("data:");
+  const groqModel = hasImage
+    ? "meta-llama/llama-4-scout-17b-16e-instruct"
+    : "llama-3.3-70b-versatile";
+
+  const promptText = `Ты нутрициолог-аналитик. ${
+    hasImage
+      ? "Посмотри на фото и определи что за блюдо или продукт."
+      : "Определи блюдо по названию."
+  } Рассчитай его калорийность и БЖУ для веса ${w}г.
 
 Контекст пользователя:
 - Дневная норма: ${goalCalories} ккал
@@ -78,14 +65,43 @@ export const handler: Handler = async (event) => {
   "message": "<1–2 предложения: что за блюдо и как соотносится с дневной нормой>"
 }`;
 
-  parts.push({ text: prompt });
+  type CPart = { type: string; text?: string; image_url?: { url: string } };
+  const userContent: string | CPart[] = hasImage
+    ? [
+        { type: "image_url", image_url: { url: image as string } },
+        { type: "text", text: promptText },
+      ]
+    : promptText;
 
   try {
-    const result = await model.generateContent(parts);
-    const raw = result.response.text().trim();
-    // Strip potential markdown fences just in case
-    const clean = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
-    const parsed = JSON.parse(clean);
+    const res = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: groqModel,
+          messages: [{ role: "user", content: userContent }],
+          ...(hasImage ? {} : { response_format: { type: "json_object" } }),
+          temperature: 0.3,
+          max_tokens: 512,
+        }),
+      },
+    );
+
+    if (!res.ok) throw new Error(await res.text());
+
+    const data = (await res.json()) as {
+      choices: Array<{ message: { content: string } }>;
+    };
+    const raw = data.choices[0].message.content.trim();
+    const clean = raw
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/\s*```$/i, "");
+    const parsed = JSON.parse(clean) as unknown;
     return {
       statusCode: 200,
       headers: CORS_HEADERS,

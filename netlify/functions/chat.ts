@@ -1,5 +1,4 @@
 import type { Handler } from "@netlify/functions";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -98,13 +97,13 @@ export const handler: Handler = async (event) => {
     };
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
     return {
       statusCode: 503,
       headers: CORS_HEADERS,
       body: JSON.stringify({
-        text: '⚠️ **GEMINI_API_KEY не настроен**\n\nЧтобы включить AI-функции:\n\n1. Перейди на [aistudio.google.com](https://aistudio.google.com)\n2. Нажми **"Get API Key"** → **"Create API key"**\n3. Скопируй ключ\n4. В Netlify: **Site Settings → Environment Variables → Add variable**\n   - Key: `GEMINI_API_KEY`\n   - Value: твой ключ\n5. Передеплой сайт\n\nGemini 1.5 Flash полностью **бесплатный** (1500 запросов/день)!',
+        text: '⚠️ **GROQ_API_KEY не настроен**. Добавь ключ из console.groq.com в Netlify → Environment Variables.',
         actions: [],
         setupRequired: true,
       }),
@@ -124,16 +123,6 @@ export const handler: Handler = async (event) => {
       context: Record<string, unknown> | null;
       image?: string; // base64 data-url e.g. "data:image/jpeg;base64,..."
     };
-
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-lite",
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.85,
-        maxOutputTokens: 2048,
-      },
-    });
 
     // Build rich context string
     let contextStr = "";
@@ -193,55 +182,65 @@ ${
 
     const systemWithCtx = SYSTEM_PROMPT + "\n\n" + contextStr;
 
-    // Build chat history (last 12 messages)
-    const chatHistory = history.slice(-12).map((m) => ({
-      role: m.role as "user" | "model",
-      parts: [{ text: m.text }],
-    }));
+    // Build messages for Groq (OpenAI-compatible)
+    type GContent =
+      | string
+      | Array<{ type: string; text?: string; image_url?: { url: string } }>;
+    const messages: Array<{ role: string; content: GContent }> = [
+      { role: "system", content: systemWithCtx },
+      ...history.slice(-12).map((m: { role: string; text: string }) => ({
+        role: m.role === "model" ? "assistant" : "user",
+        content: m.text,
+      })),
+    ];
 
-    const chat = model.startChat({
-      history: [
-        {
-          role: "user",
-          parts: [
-            {
-              text:
-                systemWithCtx +
-                '\n\nПойми свои инструкции и скажи только: {"text": "Готов помочь!", "actions": []}',
-            },
-          ],
-        },
-        {
-          role: "model",
-          parts: [{ text: '{"text": "Готов помочь!", "actions": []}' }],
-        },
-        ...chatHistory,
-      ],
-    });
-
-    // Build message parts — text + optional image
-    const messageParts: Array<
-      { text: string } | { inlineData: { mimeType: string; data: string } }
-    > = [];
-
-    if (image && typeof image === "string" && image.startsWith("data:")) {
-      // Extract mime type and base64 data from data-url
-      const match = image.match(/^data:(image\/\w+);base64,(.+)$/);
-      if (match) {
-        messageParts.push({
-          inlineData: { mimeType: match[1], data: match[2] },
-        });
-      }
+    const hasImage =
+      image && typeof image === "string" && image.startsWith("data:");
+    if (hasImage) {
+      messages.push({
+        role: "user",
+        content: [
+          { type: "image_url", image_url: { url: image as string } },
+          {
+            type: "text",
+            text: `${message}\n\n(Проанализируй фото: определи блюдо, калории, БЖУ. Предложи добавить в дневник.)`,
+          },
+        ],
+      });
+    } else {
+      messages.push({ role: "user", content: message });
     }
 
-    messageParts.push({
-      text: image
-        ? `${message}\n\n(Пользователь прикрепил фото блюда/продукта. Проанализируй его: определи что это, примерный вес порции, калории, БЖУ. Предложи добавить в дневник.)`
-        : message,
-    });
+    const groqModel = hasImage
+      ? "meta-llama/llama-4-scout-17b-16e-instruct"
+      : "llama-3.3-70b-versatile";
 
-    const result = await chat.sendMessage(messageParts);
-    const raw = result.response.text();
+    const groqRes = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: groqModel,
+          messages,
+          ...(hasImage ? {} : { response_format: { type: "json_object" } }),
+          temperature: 0.85,
+          max_tokens: 2048,
+        }),
+      },
+    );
+
+    if (!groqRes.ok) {
+      throw new Error(await groqRes.text());
+    }
+
+    const groqData = (await groqRes.json()) as {
+      choices: Array<{ message: { content: string } }>;
+    };
+    const raw = groqData.choices[0].message.content;
 
     let parsed: { text: string; actions: unknown[] };
     try {
