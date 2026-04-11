@@ -54,7 +54,8 @@ function toStoredMessage(m: Message): StoredMessage {
     image: m.image ? m.image.substring(0, 64) + "…" : undefined,
     actions: m.actions,
     actionStates: m.actionStates,
-    timestamp: m.timestamp instanceof Date ? m.timestamp.toISOString() : m.timestamp,
+    timestamp:
+      m.timestamp instanceof Date ? m.timestamp.toISOString() : m.timestamp,
     setupRequired: m.setupRequired,
   };
 }
@@ -83,7 +84,10 @@ function chatTitle(text: string): string {
 const SUGGESTIONS = [
   { text: "Что мне съесть?", icon: <UtensilsCrossed className="h-4 w-4" /> },
   { text: "Анализ за сегодня", icon: <Flame className="h-4 w-4" /> },
-  { text: "Рецепт из холодильника", icon: <ShoppingBasket className="h-4 w-4" /> },
+  {
+    text: "Рецепт из холодильника",
+    icon: <ShoppingBasket className="h-4 w-4" />,
+  },
   { text: "Сколько калорий осталось?", icon: <Zap className="h-4 w-4" /> },
   { text: "Составь план питания", icon: <ChefHat className="h-4 w-4" /> },
 ];
@@ -127,7 +131,12 @@ function ThinkingDots() {
             key={i}
             className="h-1.5 w-1.5 rounded-full bg-[var(--muted)]"
             animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2, ease: "easeInOut" }}
+            transition={{
+              duration: 1.2,
+              repeat: Infinity,
+              delay: i * 0.2,
+              ease: "easeInOut",
+            }}
           />
         ))}
       </div>
@@ -156,17 +165,22 @@ function ActionCard({
       animate={{ opacity: state === "dismissed" ? 0.4 : 1, y: 0 }}
       className={cn(
         "rounded-xl border p-3 transition-all",
-        ACTION_COLORS[action.type] ?? "border-[var(--border)] bg-[var(--surface)]",
+        ACTION_COLORS[action.type] ??
+          "border-[var(--border)] bg-[var(--surface)]",
       )}
     >
       <div className="flex items-center gap-2.5">
         <div className="text-[var(--muted)]">{ACTION_ICONS[action.type]}</div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-[var(--text)] leading-tight">{action.label}</p>
+          <p className="text-sm font-medium text-[var(--text)] leading-tight">
+            {action.label}
+          </p>
           {action.data.calories !== undefined && (
             <p className="text-xs text-[var(--muted)] mt-0.5">
               {Math.round(Number(action.data.calories))} ккал
-              {action.data.portionWeight ? ` · ${action.data.portionWeight}г` : ""}
+              {action.data.portionWeight
+                ? ` · ${action.data.portionWeight}г`
+                : ""}
             </p>
           )}
         </div>
@@ -176,7 +190,8 @@ function ActionCard({
               onClick={onConfirm}
               className={cn(
                 "h-7 w-7 rounded-lg flex items-center justify-center text-white transition-all active:scale-95",
-                ACTION_BTN[action.type] ?? "bg-primary-500 hover:bg-primary-600",
+                ACTION_BTN[action.type] ??
+                  "bg-primary-500 hover:bg-primary-600",
               )}
             >
               <Check className="h-3.5 w-3.5" />
@@ -213,7 +228,12 @@ function GeminiMessage({
   onAction,
 }: {
   message: Message;
-  onAction: (msgId: string, idx: number, action: ChatAction, confirmed: boolean) => void;
+  onAction: (
+    msgId: string,
+    idx: number,
+    action: ChatAction,
+    confirmed: boolean,
+  ) => void;
 }) {
   const isUser = message.role === "user";
 
@@ -259,17 +279,52 @@ function GeminiMessage({
         <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5 prose-headings:my-2">
           <ReactMarkdown
             components={{
-              p: ({ children }) => <p className="text-[var(--text)]">{children}</p>,
-              strong: ({ children }) => <strong className="font-semibold text-[var(--text)]">{children}</strong>,
-              em: ({ children }) => <em className="text-[var(--muted)]">{children}</em>,
-              ul: ({ children }) => <ul className="ml-4 space-y-0.5 list-disc marker:text-[var(--muted)]">{children}</ul>,
-              ol: ({ children }) => <ol className="ml-4 space-y-0.5 list-decimal marker:text-[var(--muted)]">{children}</ol>,
-              li: ({ children }) => <li className="text-[var(--text)]">{children}</li>,
-              h1: ({ children }) => <p className="text-base font-bold text-[var(--text)]">{children}</p>,
-              h2: ({ children }) => <p className="text-base font-semibold text-[var(--text)]">{children}</p>,
-              h3: ({ children }) => <p className="text-sm font-semibold text-[var(--text)]">{children}</p>,
+              p: ({ children }) => (
+                <p className="text-[var(--text)]">{children}</p>
+              ),
+              strong: ({ children }) => (
+                <strong className="font-semibold text-[var(--text)]">
+                  {children}
+                </strong>
+              ),
+              em: ({ children }) => (
+                <em className="text-[var(--muted)]">{children}</em>
+              ),
+              ul: ({ children }) => (
+                <ul className="ml-4 space-y-0.5 list-disc marker:text-[var(--muted)]">
+                  {children}
+                </ul>
+              ),
+              ol: ({ children }) => (
+                <ol className="ml-4 space-y-0.5 list-decimal marker:text-[var(--muted)]">
+                  {children}
+                </ol>
+              ),
+              li: ({ children }) => (
+                <li className="text-[var(--text)]">{children}</li>
+              ),
+              h1: ({ children }) => (
+                <p className="text-base font-bold text-[var(--text)]">
+                  {children}
+                </p>
+              ),
+              h2: ({ children }) => (
+                <p className="text-base font-semibold text-[var(--text)]">
+                  {children}
+                </p>
+              ),
+              h3: ({ children }) => (
+                <p className="text-sm font-semibold text-[var(--text)]">
+                  {children}
+                </p>
+              ),
               a: ({ href, children }) => (
-                <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary-500 underline underline-offset-2">
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary-500 underline underline-offset-2"
+                >
                   {children}
                 </a>
               ),
@@ -388,7 +443,9 @@ function ChatSidebar({
         <div className="h-7 w-7 rounded-full bg-gradient-to-br from-primary-400 to-emerald-500 flex items-center justify-center">
           <Sparkles className="h-3.5 w-3.5 text-white" />
         </div>
-        <span className="flex-1 text-sm font-semibold text-[var(--text)]">История</span>
+        <span className="flex-1 text-sm font-semibold text-[var(--text)]">
+          История
+        </span>
         <button
           onClick={onNew}
           className="h-9 w-9 rounded-full hover:bg-[var(--surface-2)] flex items-center justify-center transition active:scale-95"
@@ -403,14 +460,19 @@ function ChatSidebar({
           <div className="flex flex-col items-center justify-center h-full gap-3 px-4 text-center py-12">
             <MessageSquare className="h-10 w-10 text-[var(--border)]" />
             <p className="text-sm text-[var(--muted)]">Нет бесед</p>
-            <button onClick={onNew} className="text-sm text-primary-500 font-medium">
+            <button
+              onClick={onNew}
+              className="text-sm text-primary-500 font-medium"
+            >
               Начать новую
             </button>
           </div>
         ) : (
           Object.entries(groups).map(([label, groupChats]) => (
             <div key={label}>
-              <p className="px-4 py-1.5 text-xs text-[var(--muted)] font-medium">{label}</p>
+              <p className="px-4 py-1.5 text-xs text-[var(--muted)] font-medium">
+                {label}
+              </p>
               {groupChats.map((chat) => (
                 <div
                   key={chat.id}
@@ -420,21 +482,40 @@ function ChatSidebar({
                       ? "bg-primary-500/10"
                       : "hover:bg-[var(--surface-2)]",
                   )}
-                  onClick={() => { onSelect(chat.id); onClose(); }}
+                  onClick={() => {
+                    onSelect(chat.id);
+                    onClose();
+                  }}
                 >
-                  <MessageSquare className={cn("h-4 w-4 shrink-0", activeChatId === chat.id ? "text-primary-500" : "text-[var(--muted)]")} />
-                  <span className="flex-1 text-sm text-[var(--text)] truncate leading-tight">{chat.title}</span>
+                  <MessageSquare
+                    className={cn(
+                      "h-4 w-4 shrink-0",
+                      activeChatId === chat.id
+                        ? "text-primary-500"
+                        : "text-[var(--muted)]",
+                    )}
+                  />
+                  <span className="flex-1 text-sm text-[var(--text)] truncate leading-tight">
+                    {chat.title}
+                  </span>
 
                   {deleteConfirm === chat.id ? (
                     <div className="flex gap-1 shrink-0">
                       <button
-                        onClick={(e) => { e.stopPropagation(); onDelete(chat.id); setDeleteConfirm(null); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDelete(chat.id);
+                          setDeleteConfirm(null);
+                        }}
                         className="h-6 w-6 rounded-md bg-red-500/20 text-red-400 flex items-center justify-center hover:bg-red-500/30 transition"
                       >
                         <Check className="h-3 w-3" />
                       </button>
                       <button
-                        onClick={(e) => { e.stopPropagation(); setDeleteConfirm(null); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeleteConfirm(null);
+                        }}
                         className="h-6 w-6 rounded-md bg-[var(--border)] flex items-center justify-center hover:bg-[var(--surface-2)] transition"
                       >
                         <X className="h-3 w-3 text-[var(--muted)]" />
@@ -442,7 +523,10 @@ function ChatSidebar({
                     </div>
                   ) : (
                     <button
-                      onClick={(e) => { e.stopPropagation(); setDeleteConfirm(chat.id); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeleteConfirm(chat.id);
+                      }}
                       className="h-6 w-6 rounded-md opacity-0 group-hover:opacity-100 flex items-center justify-center hover:bg-red-500/10 transition shrink-0"
                     >
                       <Trash2 className="h-3.5 w-3.5 text-[var(--muted)] hover:text-red-400" />
@@ -496,8 +580,15 @@ export function ChatPage() {
   const hasMessages = messages.length > 0;
 
   /* ─── Load messages when activeChatId changes ─── */
+  // Blocks the load effect during first-message send to prevent race condition:
+  // createChat() changes activeChatId → effect fires → resets messages to []
+  const blockLoadRef = useRef(false);
   useEffect(() => {
-    if (!activeChatId) { setMessages([]); return; }
+    if (blockLoadRef.current) return;
+    if (!activeChatId) {
+      setMessages([]);
+      return;
+    }
     const chat = userChats.find((c) => c.id === activeChatId);
     setMessages(chat ? chat.messages.map(fromStoredMessage) : []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -509,9 +600,15 @@ export function ChatPage() {
     if (!activeChatId || !activeUserId || messages.length === 0) return;
     if (persistRef.current) clearTimeout(persistRef.current);
     persistRef.current = setTimeout(() => {
-      updateChatMessages(activeUserId, activeChatId, messages.map(toStoredMessage));
+      updateChatMessages(
+        activeUserId,
+        activeChatId,
+        messages.map(toStoredMessage),
+      );
     }, 400);
-    return () => { if (persistRef.current) clearTimeout(persistRef.current); };
+    return () => {
+      if (persistRef.current) clearTimeout(persistRef.current);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
@@ -520,7 +617,9 @@ export function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  useEffect(() => { scrollToBottom(); }, [messages, isLoading, scrollToBottom]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading, scrollToBottom]);
 
   const handleScroll = () => {
     const el = scrollAreaRef.current;
@@ -576,6 +675,7 @@ export function ChatPage() {
 
       let chatId = activeChatId;
       if (isFirstMessage || !chatId) {
+        blockLoadRef.current = true; // prevent activeChatId effect from wiping messages
         const now = new Date().toISOString();
         const newChat: Chat = {
           id: crypto.randomUUID(),
@@ -587,6 +687,10 @@ export function ChatPage() {
         };
         createChat(activeUserId, newChat);
         chatId = newChat.id;
+        // Unblock after React flushes the activeChatId change
+        requestAnimationFrame(() => {
+          blockLoadRef.current = false;
+        });
       }
 
       setMessages((prev) => [...prev, userMsg]);
@@ -640,11 +744,22 @@ export function ChatPage() {
 
   /* ─── Action handler ─── */
   const handleAction = useCallback(
-    (msgId: string, actionIdx: number, action: ChatAction, confirmed: boolean) => {
+    (
+      msgId: string,
+      actionIdx: number,
+      action: ChatAction,
+      confirmed: boolean,
+    ) => {
       setMessages((prev) =>
         prev.map((m) =>
           m.id === msgId
-            ? { ...m, actionStates: { ...m.actionStates, [actionIdx]: confirmed ? "confirmed" : "dismissed" } }
+            ? {
+                ...m,
+                actionStates: {
+                  ...m.actionStates,
+                  [actionIdx]: confirmed ? "confirmed" : "dismissed",
+                },
+              }
             : m,
         ),
       );
@@ -652,29 +767,46 @@ export function ChatPage() {
       const d = action.data;
       if (action.type === "ADD_DIARY_ENTRY") {
         addDiaryEntry(activeUserId, {
-          id: crypto.randomUUID(), userId: activeUserId, date: todayStr(),
+          id: crypto.randomUUID(),
+          userId: activeUserId,
+          date: todayStr(),
           mealType: (d.mealType as DiaryEntry["mealType"]) ?? "lunch",
-          name: String(d.name ?? "Блюдо"), portionWeight: Number(d.portionWeight ?? 100),
-          calories: Number(d.calories ?? 0), protein: Number(d.protein ?? 0),
-          fat: Number(d.fat ?? 0), carbs: Number(d.carbs ?? 0), createdAt: new Date().toISOString(),
+          name: String(d.name ?? "Блюдо"),
+          portionWeight: Number(d.portionWeight ?? 100),
+          calories: Number(d.calories ?? 0),
+          protein: Number(d.protein ?? 0),
+          fat: Number(d.fat ?? 0),
+          carbs: Number(d.carbs ?? 0),
+          createdAt: new Date().toISOString(),
         });
       } else if (action.type === "ADD_FRIDGE_ITEM") {
         addFridgeItem(activeUserId, {
-          id: crypto.randomUUID(), name: String(d.name ?? "Продукт"),
-          calories: Number(d.calories ?? 0), protein: Number(d.protein ?? 0),
-          fat: Number(d.fat ?? 0), carbs: Number(d.carbs ?? 0),
-          amount: Number(d.amount ?? 100), unit: String(d.unit ?? "г"), userId: activeUserId,
+          id: crypto.randomUUID(),
+          name: String(d.name ?? "Продукт"),
+          calories: Number(d.calories ?? 0),
+          protein: Number(d.protein ?? 0),
+          fat: Number(d.fat ?? 0),
+          carbs: Number(d.carbs ?? 0),
+          amount: Number(d.amount ?? 100),
+          unit: String(d.unit ?? "г"),
+          userId: activeUserId,
         });
       } else if (action.type === "ADD_RECIPE") {
         addRecipe(activeUserId, {
-          id: crypto.randomUUID(), name: String(d.name ?? "Рецепт"),
-          description: String(d.description ?? ""), photo: undefined,
+          id: crypto.randomUUID(),
+          name: String(d.name ?? "Рецепт"),
+          description: String(d.description ?? ""),
+          photo: undefined,
           ingredients: (d.ingredients as Recipe["ingredients"]) ?? [],
           defaultPortionWeight: Number(d.defaultPortionWeight ?? 200),
-          totalCalories: Number(d.totalCalories ?? 0), totalProtein: Number(d.totalProtein ?? 0),
-          totalFat: Number(d.totalFat ?? 0), totalCarbs: Number(d.totalCarbs ?? 0),
+          totalCalories: Number(d.totalCalories ?? 0),
+          totalProtein: Number(d.totalProtein ?? 0),
+          totalFat: Number(d.totalFat ?? 0),
+          totalCarbs: Number(d.totalCarbs ?? 0),
           caloriesPer100g: Number(d.caloriesPer100g ?? 0),
-          tags: (d.tags as string[]) ?? [], userId: activeUserId, createdAt: new Date().toISOString(),
+          tags: (d.tags as string[]) ?? [],
+          userId: activeUserId,
+          createdAt: new Date().toISOString(),
         });
       }
     },
@@ -683,7 +815,10 @@ export function ChatPage() {
 
   /* ─── Key handler ─── */
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(input); }
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage(input);
+    }
   };
 
   /* ─── No profile ─── */
@@ -694,7 +829,9 @@ export function ChatPage() {
           <Sparkles className="h-9 w-9 text-white" />
         </div>
         <h2 className="text-xl font-bold text-[var(--text)] mb-2">NutriAI</h2>
-        <p className="text-[var(--muted)] text-sm mb-6">Создайте профиль чтобы начать</p>
+        <p className="text-[var(--muted)] text-sm mb-6">
+          Создайте профиль чтобы начать
+        </p>
         <button
           onClick={() => navigate("/users")}
           className="px-6 py-3 rounded-full bg-primary-500 text-white font-medium text-sm hover:bg-primary-600 transition active:scale-95"
@@ -711,7 +848,6 @@ export function ChatPage() {
 
   return (
     <div className="flex h-[100svh] bg-[var(--bg)] w-full relative overflow-hidden">
-
       {/* ── Sidebar overlay ──────────────────────────────────────────────────── */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -736,7 +872,9 @@ export function ChatPage() {
                 activeChatId={activeChatId}
                 onSelect={(id) => setActiveChatId(id)}
                 onNew={handleNewChat}
-                onDelete={(id) => { if (activeUserId) deleteChat(activeUserId, id); }}
+                onDelete={(id) => {
+                  if (activeUserId) deleteChat(activeUserId, id);
+                }}
                 onClose={() => setSidebarOpen(false)}
               />
             </motion.div>
@@ -746,7 +884,6 @@ export function ChatPage() {
 
       {/* ── Main column ──────────────────────────────────────────────────────── */}
       <div className="flex flex-col flex-1 min-w-0">
-
         {/* Header */}
         <header className="shrink-0 flex items-center gap-2 px-3 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2 border-b border-[var(--border)] bg-[var(--bg)]">
           <button
@@ -771,11 +908,13 @@ export function ChatPage() {
           <div className="flex-1 min-w-0">
             <h1 className="text-sm font-semibold text-[var(--text)] leading-tight truncate">
               {activeChatId
-                ? (userChats.find((c) => c.id === activeChatId)?.title ?? "NutriAI")
+                ? (userChats.find((c) => c.id === activeChatId)?.title ??
+                  "NutriAI")
                 : "NutriAI"}
             </h1>
             <p className="text-xs text-[var(--muted)] truncate">
-              {Math.round(buildAIContext()?.todayCalories ?? 0)} / {user.goalCalories ?? "—"} ккал сегодня
+              {Math.round(buildAIContext()?.todayCalories ?? 0)} /{" "}
+              {user.goalCalories ?? "—"} ккал сегодня
             </p>
           </div>
 
@@ -832,7 +971,13 @@ export function ChatPage() {
                     className="mt-6 text-sm text-primary-500 flex items-center gap-2"
                   >
                     <MessageSquare className="h-4 w-4" />
-                    {userChats.length} {userChats.length === 1 ? "беседа" : userChats.length < 5 ? "беседы" : "бесед"} сохранено
+                    {userChats.length}{" "}
+                    {userChats.length === 1
+                      ? "беседа"
+                      : userChats.length < 5
+                        ? "беседы"
+                        : "бесед"}{" "}
+                    сохранено
                   </button>
                 )}
               </motion.div>
@@ -840,7 +985,11 @@ export function ChatPage() {
 
             <AnimatePresence initial={false}>
               {messages.map((msg) => (
-                <GeminiMessage key={msg.id} message={msg} onAction={handleAction} />
+                <GeminiMessage
+                  key={msg.id}
+                  message={msg}
+                  onAction={handleAction}
+                />
               ))}
             </AnimatePresence>
 
@@ -879,7 +1028,11 @@ export function ChatPage() {
                 className="overflow-hidden"
               >
                 <div className="mb-2 relative inline-block">
-                  <img src={imagePreview} alt="Фото" className="h-20 rounded-xl border border-[var(--border)]" />
+                  <img
+                    src={imagePreview}
+                    alt="Фото"
+                    className="h-20 rounded-xl border border-[var(--border)]"
+                  />
                   <button
                     onClick={() => setImagePreview(null)}
                     className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center shadow-sm"
@@ -906,7 +1059,13 @@ export function ChatPage() {
             >
               <ImagePlus className="h-5 w-5 text-[var(--muted)]" />
             </button>
-            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImagePick} />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImagePick}
+            />
 
             <textarea
               ref={inputRef}
@@ -933,7 +1092,11 @@ export function ChatPage() {
                   : "text-[var(--muted)]",
               )}
             >
-              {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
             </button>
           </div>
 

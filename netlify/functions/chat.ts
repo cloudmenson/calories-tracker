@@ -217,7 +217,7 @@ ${
           {
             type: "text",
             text: userDescribedFood
-              ? message  // user already explained — just pass their message
+              ? message // user already explained — just pass their message
               : "На фото еда.", // no description — AI will ask
           },
         ],

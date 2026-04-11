@@ -17,7 +17,12 @@ export function AppLayout() {
       {isChatPage ? (
         <Outlet />
       ) : (
-        <main className="flex-1 pb-24">
+        <main
+          className="flex-1"
+          style={{
+            paddingBottom: "calc(4rem + env(safe-area-inset-bottom, 0px))",
+          }}
+        >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={pathname}

@@ -21,18 +21,14 @@ export function BottomNav() {
   const { pathname } = useLocation();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 flex justify-center pointer-events-none pb-[max(0.5rem,env(safe-area-inset-bottom))] px-4">
-      <nav
-        className={cn(
-          "pointer-events-auto flex items-center justify-around w-full max-w-lg",
-          "px-2 py-1.5 rounded-2xl",
-          "bg-white/70 dark:bg-[#161622]/80 backdrop-blur-2xl",
-          "border border-white/60 dark:border-white/[0.06]",
-          "shadow-[0_4px_24px_rgba(0,0,0,0.08),0_1px_4px_rgba(0,0,0,0.04)]",
-          "dark:shadow-[0_4px_24px_rgba(0,0,0,0.5)]",
-        )}
-        style={{ WebkitBackdropFilter: "blur(24px)" }}
-      >
+    <div
+      className="fixed bottom-0 left-0 right-0 z-40 bg-white/75 dark:bg-[#161622]/85 backdrop-blur-2xl border-t border-white/50 dark:border-white/[0.06] shadow-[0_-4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_-4px_24px_rgba(0,0,0,0.4)]"
+      style={{
+        WebkitBackdropFilter: "blur(24px)",
+        paddingBottom: "env(safe-area-inset-bottom, 0px)",
+      }}
+    >
+      <nav className="flex items-center justify-around max-w-lg mx-auto px-2 py-1.5">
         {navItems.map(({ to, icon: Icon, label }) => {
           const active = pathname === to;
           return (
