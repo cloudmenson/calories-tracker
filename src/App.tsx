@@ -8,11 +8,13 @@ import { AnalyticsPage } from "./pages/AnalyticsPage";
 import { UsersPage } from "./pages/UsersPage";
 import { ChatPage } from "./pages/ChatPage";
 import { useSyncWithMongo } from "./lib/sync";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 function App() {
   useSyncWithMongo();
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/users" element={<UsersPage />} />
         <Route element={<AppLayout />}>

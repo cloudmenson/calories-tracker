@@ -71,13 +71,19 @@ async function saveRemoteState(): Promise<void> {
 // React hook — call once in App.tsx
 export function useSyncWithMongo() {
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Block saves until initial remote load completes to avoid overwriting remote
+  // data with stale local state (race condition on first open)
+  const isLoading = useRef(true);
 
   useEffect(() => {
-    // Load on mount
-    loadRemoteState();
+    // Load on mount, then allow saves
+    loadRemoteState().finally(() => {
+      isLoading.current = false;
+    });
 
     // Subscribe to store changes and debounce-save
     const unsub = useAppStore.subscribe(() => {
+      if (isLoading.current) return; // skip saves while initial load is pending
       if (saveTimer.current) clearTimeout(saveTimer.current);
       saveTimer.current = setTimeout(saveRemoteState, 2000);
     });

@@ -22,7 +22,10 @@ export function TopBar({ title, showBack, right, transparent }: TopBarProps) {
           ? "bg-transparent"
           : "bg-white/80 dark:bg-[#161622]/80 border-b border-gray-100/60 dark:border-[#27273a]/60",
       )}
-      style={{ WebkitBackdropFilter: "blur(20px)" }}
+      style={{
+        WebkitBackdropFilter: "blur(20px)",
+        paddingTop: "env(safe-area-inset-top)",
+      }}
     >
       <div className="flex items-center justify-between px-4 h-14 max-w-lg mx-auto">
         <div className="flex items-center gap-2 min-w-0">

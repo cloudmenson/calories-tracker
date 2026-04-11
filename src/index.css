@@ -41,10 +41,12 @@ body {
 }
 
 /* ── Prevent Safari auto-zoom on focus ───────────────────── */
+/* Safari zooms when font-size < 16px — !important prevents Tailwind overrides */
 input,
 textarea,
 select {
-  font-size: 16px;
+  font-size: 16px !important;
+  touch-action: manipulation;
 }
 
 #root {
