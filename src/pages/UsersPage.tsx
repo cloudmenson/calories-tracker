@@ -114,7 +114,7 @@ export function UsersPage() {
   };
 
   return (
-    <div className="min-h-[100svh] bg-gray-50 dark:bg-[#0d0d14] p-5">
+    <div className="min-h-[100dvh] bg-gray-50 dark:bg-[#0d0d14] p-5">
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6 pt-[max(1rem,env(safe-area-inset-top))]">

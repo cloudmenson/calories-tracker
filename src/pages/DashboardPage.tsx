@@ -66,7 +66,7 @@ export function DashboardPage() {
 
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[80svh] p-8 text-center">
+      <div className="flex flex-col items-center justify-center min-h-[80dvh] p-8 text-center">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}

@@ -824,7 +824,7 @@ export function ChatPage() {
   /* ─── No profile ─── */
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center h-[100svh] bg-[var(--bg)] p-8 text-center">
+      <div className="flex flex-col items-center justify-center h-[100dvh] bg-[var(--bg)] p-8 text-center">
         <div className="h-20 w-20 rounded-full bg-gradient-to-br from-primary-400 to-emerald-500 flex items-center justify-center mb-5">
           <Sparkles className="h-9 w-9 text-white" />
         </div>
@@ -847,7 +847,7 @@ export function ChatPage() {
      ═══════════════════════════════════════════════════════════════════════════ */
 
   return (
-    <div className="flex h-[100svh] bg-[var(--bg)] w-full relative overflow-hidden">
+    <div className="flex h-[100dvh] bg-[var(--bg)] w-full relative overflow-hidden">
       {/* ── Sidebar overlay ──────────────────────────────────────────────────── */}
       <AnimatePresence>
         {sidebarOpen && (

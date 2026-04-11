@@ -322,7 +322,7 @@ export function QuickLogSheet({ isOpen, onClose, onAdded }: Props) {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 28, stiffness: 280 }}
-            className="fixed bottom-0 left-0 right-0 z-50 bg-[--surface] rounded-t-3xl max-h-[92svh] flex flex-col shadow-2xl"
+            className="fixed bottom-0 left-0 right-0 z-50 bg-[--surface] rounded-t-3xl max-h-[92dvh] flex flex-col shadow-2xl"
           >
             {/* Drag handle */}
             <div className="flex justify-center pt-3 pb-2 shrink-0">
