@@ -7,21 +7,7 @@ import { Card, CardContent } from "../components/ui/Card";
 import { Progress } from "../components/ui/Progress";
 import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/Badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/ui/Dialog";
-import { Input } from "../components/ui/Input";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "../components/ui/Select";
+import { QuickLogSheet } from "../components/QuickLogSheet";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import {
   Flame,
@@ -29,10 +15,10 @@ import {
   Beef,
   Wheat,
   Plus,
-  Camera,
   Target,
   TrendingUp,
   Refrigerator,
+  UtensilsCrossed,
 } from "lucide-react";
 import {
   calculateBMR,
@@ -40,8 +26,7 @@ import {
   todayStr,
   formatCalories,
 } from "../lib/utils";
-import type { DiaryEntry, MealType } from "../types";
-import { Controller, useForm } from "react-hook-form";
+import type { MealType } from "../types";
 
 const mealLabels: Record<MealType, { label: string; emoji: string }> = {
   breakfast: { label: "Завтрак", emoji: "🌅" },
@@ -50,26 +35,15 @@ const mealLabels: Record<MealType, { label: string; emoji: string }> = {
   snack: { label: "Перекус", emoji: "🍎" },
 };
 
-interface QuickAddForm {
-  name: string;
-  mealType: MealType;
-  portionWeight: number;
-  calories: number;
-  protein: number;
-  fat: number;
-  carbs: number;
-}
-
 export function DashboardPage() {
   const navigate = useNavigate();
   const {
     getActiveUser,
     getTodayEntries,
-    addDiaryEntry,
     activeUserId,
     weightHistory,
   } = useAppStore();
-  const [addOpen, setAddOpen] = useState(false);
+  const [logOpen, setLogOpen] = useState(false);
 
   const user = getActiveUser();
   const today = todayStr();
@@ -93,37 +67,6 @@ export function DashboardPage() {
     weightArr.length > 0
       ? weightArr[weightArr.length - 1].weight
       : user?.weight;
-
-  const { register, handleSubmit, control, reset } = useForm<QuickAddForm>({
-    defaultValues: {
-      mealType: "lunch",
-      portionWeight: 100,
-      calories: 0,
-      protein: 0,
-      fat: 0,
-      carbs: 0,
-    },
-  });
-
-  const onQuickAdd = (data: QuickAddForm) => {
-    if (!activeUserId) return;
-    const entry: DiaryEntry = {
-      id: crypto.randomUUID(),
-      userId: activeUserId,
-      date: today,
-      mealType: data.mealType,
-      name: data.name,
-      portionWeight: data.portionWeight,
-      calories: data.calories,
-      protein: data.protein,
-      fat: data.fat,
-      carbs: data.carbs,
-      createdAt: new Date().toISOString(),
-    };
-    addDiaryEntry(activeUserId, entry);
-    reset();
-    setAddOpen(false);
-  };
 
   if (!user) {
     return (
@@ -154,77 +97,11 @@ export function DashboardPage() {
   const remaining = goalCal - totals.calories;
 
   return (
-    <div>
-      <TopBar
-        title="Главная"
-        right={
-          <Dialog open={addOpen} onOpenChange={setAddOpen}>
-            <DialogTrigger asChild>
-              <Button size="icon-sm" variant="outline">
-                <Plus className="h-4 w-4" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Быстрое добавление</DialogTitle>
-              </DialogHeader>
-              <form
-                onSubmit={handleSubmit(onQuickAdd)}
-                className="flex flex-col gap-3"
-              >
-                <Input
-                  label="Название"
-                  placeholder="Куриная грудка..."
-                  {...register("name", { required: true })}
-                />
-                <Controller
-                  name="mealType"
-                  control={control}
-                  render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger label="Приём пищи">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.entries(mealLabels).map(
-                          ([val, { label, emoji }]) => (
-                            <SelectItem key={val} value={val}>
-                              {emoji} {label}
-                            </SelectItem>
-                          ),
-                        )}
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                <div className="grid grid-cols-2 gap-3">
-                  <Input
-                    label="Порция (г)"
-                    type="number"
-                    {...register("portionWeight")}
-                  />
-                  <Input
-                    label="Калории"
-                    type="number"
-                    {...register("calories")}
-                  />
-                </div>
-                <div className="grid grid-cols-3 gap-3">
-                  <Input label="Белки" type="number" {...register("protein")} />
-                  <Input label="Жиры" type="number" {...register("fat")} />
-                  <Input
-                    label="Углеводы"
-                    type="number"
-                    {...register("carbs")}
-                  />
-                </div>
-                <Button type="submit" className="mt-1">
-                  Добавить
-                </Button>
-              </form>
-            </DialogContent>
-          </Dialog>
-        }
+    <div className="relative">
+      <TopBar title="Главная" />
+      <QuickLogSheet
+        isOpen={logOpen}
+        onClose={() => setLogOpen(false)}
       />
 
       <div className="px-4 py-4 space-y-4 max-w-lg mx-auto">
@@ -233,10 +110,10 @@ export function DashboardPage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-xl font-bold text-[--text]">
             Привет, {user.name.split(" ")[0]}! 👋
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-[--muted]">
             {new Date().toLocaleDateString("ru-RU", {
               weekday: "long",
               day: "numeric",
@@ -245,7 +122,7 @@ export function DashboardPage() {
           </p>
         </motion.div>
 
-        {/* Calorie ring card */}
+        {/* Calorie hero card */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -253,8 +130,10 @@ export function DashboardPage() {
         >
           <Card className="overflow-hidden">
             <CardContent className="p-5">
-              <div className="flex items-center gap-4">
-                <div className="relative h-28 w-28 shrink-0">
+              {/* Ring + stats row */}
+              <div className="flex items-center gap-5">
+                {/* Ring */}
+                <div className="relative h-32 w-32 shrink-0">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -264,92 +143,91 @@ export function DashboardPage() {
                         ]}
                         cx="50%"
                         cy="50%"
-                        innerRadius={38}
-                        outerRadius={52}
+                        innerRadius={42}
+                        outerRadius={58}
                         startAngle={90}
                         endAngle={-270}
                         dataKey="value"
                         strokeWidth={0}
                       >
-                        <Cell fill="#22c55e" />
-                        <Cell fill="#f3f4f6" />
+                        <Cell fill={remaining < 0 ? "#ef4444" : "#22c55e"} />
+                        <Cell fill="#27273a" />
                       </Pie>
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-lg font-bold text-gray-900 leading-none">
+                    <span className="text-base font-bold text-[--text] leading-none">
                       {formatCalories(totals.calories)}
                     </span>
-                    <span className="text-xs text-gray-400">ккал</span>
+                    <span className="text-xs text-[--muted]">съедено</span>
                   </div>
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Flame className="h-4 w-4 text-orange-500" />
-                    <span className="text-sm font-semibold text-gray-900">
-                      Калории сегодня
-                    </span>
-                  </div>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {formatCalories(totals.calories)}
-                    <span className="text-sm text-gray-400 font-normal">
-                      {" "}
-                      / {formatCalories(goalCal)}
-                    </span>
+
+                {/* Text stats */}
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-[--muted] font-medium uppercase tracking-wide mb-1">
+                    {remaining >= 0 ? "Осталось сегодня" : "Превышение"}
                   </p>
-                  <Progress value={calPct} className="mt-2" />
                   <p
-                    className={`text-xs mt-1 font-medium ${remaining >= 0 ? "text-primary-600" : "text-red-500"}`}
+                    className={`text-4xl font-black tabular-nums leading-none ${
+                      remaining >= 0 ? "text-primary-500" : "text-red-400"
+                    }`}
                   >
-                    {remaining >= 0
-                      ? `Осталось: ${formatCalories(remaining)} ккал`
-                      : `Превышение: ${formatCalories(-remaining)} ккал`}
+                    {formatCalories(Math.abs(remaining))}
                   </p>
+                  <p className="text-sm text-[--muted] mt-0.5">
+                    из {formatCalories(goalCal)} ккал
+                  </p>
+                  <Progress value={calPct} className="mt-3" />
                 </div>
               </div>
 
               {/* Macros */}
-              <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-gray-50">
+              <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-[--border]">
                 {[
                   {
                     label: "Белки",
                     value: totals.protein,
-                    color: "text-green-600",
-                    bg: "bg-green-50",
+                    color: "text-green-400",
+                    bg: "bg-green-500/8",
                     icon: <Beef className="h-3.5 w-3.5" />,
                   },
                   {
                     label: "Жиры",
                     value: totals.fat,
-                    color: "text-orange-600",
-                    bg: "bg-orange-50",
+                    color: "text-orange-400",
+                    bg: "bg-orange-500/8",
                     icon: <Droplets className="h-3.5 w-3.5" />,
                   },
                   {
                     label: "Углеводы",
                     value: totals.carbs,
-                    color: "text-blue-600",
-                    bg: "bg-blue-50",
+                    color: "text-blue-400",
+                    bg: "bg-blue-500/8",
                     icon: <Wheat className="h-3.5 w-3.5" />,
                   },
                 ].map(({ label, value, color, bg, icon }) => (
-                  <div
-                    key={label}
-                    className={`${bg} rounded-xl p-2.5 text-center`}
-                  >
-                    <div
-                      className={`flex items-center justify-center gap-1 ${color} mb-0.5`}
-                    >
+                  <div key={label} className={`${bg} rounded-xl p-2.5 text-center`}>
+                    <div className={`flex items-center justify-center gap-1 ${color} mb-0.5`}>
                       {icon}
                       <span className="text-xs font-medium">{label}</span>
                     </div>
                     <p className={`text-base font-bold ${color}`}>
                       {value.toFixed(1)}
-                      <span className="text-xs font-normal">г</span>
+                      <span className="text-xs font-normal text-[--muted]">г</span>
                     </p>
                   </div>
                 ))}
               </div>
+
+              {/* Primary CTA */}
+              <button
+                onClick={() => setLogOpen(true)}
+                className="mt-4 w-full h-14 bg-primary-500 hover:bg-primary-600 active:scale-[0.98] rounded-2xl flex items-center justify-center gap-2.5 font-bold text-white text-base shadow-lg shadow-primary-500/30 transition-all"
+              >
+                <Plus className="h-6 w-6" />
+                Добавить еду
+              </button>
             </CardContent>
           </Card>
         </motion.div>
@@ -364,27 +242,27 @@ export function DashboardPage() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-1">
-                <Target className="h-4 w-4 text-purple-500" />
-                <span className="text-xs text-gray-500 font-medium">TDEE</span>
+                <Target className="h-4 w-4 text-purple-400" />
+                <span className="text-xs text-[--muted] font-medium">TDEE</span>
               </div>
-              <p className="text-xl font-bold text-gray-900">
+              <p className="text-xl font-bold text-[--text]">
                 {formatCalories(tdee)}
               </p>
-              <p className="text-xs text-gray-400">ккал/день</p>
+              <p className="text-xs text-[--muted]">ккал/день</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-1">
-                <TrendingUp className="h-4 w-4 text-blue-500" />
-                <span className="text-xs text-gray-500 font-medium">Вес</span>
+                <TrendingUp className="h-4 w-4 text-blue-400" />
+                <span className="text-xs text-[--muted] font-medium">Вес</span>
               </div>
-              <p className="text-xl font-bold text-gray-900">
+              <p className="text-xl font-bold text-[--text]">
                 {latestWeight}{" "}
-                <span className="text-sm text-gray-400 font-normal">кг</span>
+                <span className="text-sm text-[--muted] font-normal">кг</span>
               </p>
               {user.goalWeight && (
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-[--muted]">
                   Цель: {user.goalWeight} кг
                 </p>
               )}
@@ -404,14 +282,12 @@ export function DashboardPage() {
             onClick={() => navigate("/fridge")}
           >
             <CardContent className="p-4 flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                <Refrigerator className="h-5 w-5 text-blue-500" />
+              <div className="h-10 w-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                <Refrigerator className="h-5 w-5 text-blue-400" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900">
-                  Холодильник
-                </p>
-                <p className="text-xs text-gray-400">Продукты</p>
+                <p className="text-sm font-semibold text-[--text]">Холодильник</p>
+                <p className="text-xs text-[--muted]">Продукты</p>
               </div>
             </CardContent>
           </Card>
@@ -420,12 +296,12 @@ export function DashboardPage() {
             onClick={() => navigate("/recipes")}
           >
             <CardContent className="p-4 flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-purple-50 flex items-center justify-center">
-                <Camera className="h-5 w-5 text-purple-500" />
+              <div className="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                <UtensilsCrossed className="h-5 w-5 text-purple-400" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900">Рецепты</p>
-                <p className="text-xs text-gray-400">Блюда</p>
+                <p className="text-sm font-semibold text-[--text]">Рецепты</p>
+                <p className="text-xs text-[--muted]">Блюда</p>
               </div>
             </CardContent>
           </Card>
@@ -438,7 +314,7 @@ export function DashboardPage() {
           transition={{ delay: 0.15 }}
         >
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-bold text-gray-900">Сегодня</h3>
+            <h3 className="font-bold text-[--text]">Сегодня</h3>
             <Button
               variant="ghost"
               size="sm"
@@ -450,13 +326,13 @@ export function DashboardPage() {
           {entries.length === 0 ? (
             <Card>
               <CardContent className="py-8 text-center">
-                <Camera className="h-10 w-10 text-gray-200 mx-auto mb-2" />
-                <p className="text-gray-400 text-sm">Ещё нет записей</p>
+                <Flame className="h-10 w-10 text-[--border] mx-auto mb-2" />
+                <p className="text-[--muted] text-sm">Ещё нет записей</p>
                 <Button
                   variant="outline"
                   size="sm"
                   className="mt-3"
-                  onClick={() => setAddOpen(true)}
+                  onClick={() => setLogOpen(true)}
                 >
                   <Plus className="h-4 w-4" /> Добавить еду
                 </Button>
@@ -467,14 +343,14 @@ export function DashboardPage() {
               {entries.slice(0, 5).map((entry) => (
                 <Card key={entry.id}>
                   <CardContent className="p-3 flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-primary-50 flex items-center justify-center text-lg shrink-0">
+                    <div className="h-10 w-10 rounded-xl bg-[--surface-2] flex items-center justify-center text-lg shrink-0">
                       {mealLabels[entry.mealType].emoji}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-900 text-sm truncate">
+                      <p className="font-semibold text-[--text] text-sm truncate">
                         {entry.name}
                       </p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-[--muted]">
                         {entry.portionWeight}г ·{" "}
                         {mealLabels[entry.mealType].label}
                       </p>

@@ -119,6 +119,39 @@ export function buildAIContext(): AIContext | null {
   };
 }
 
+// ─── Food analysis ────────────────────────────────────────────────────────────
+
+export interface FoodAnalysis {
+  name: string;
+  calories: number;
+  protein: number;
+  fat: number;
+  carbs: number;
+  caloriesPer100g: number;
+  proteinPer100g: number;
+  fatPer100g: number;
+  carbsPer100g: number;
+  message: string;
+}
+
+export async function analyzeFood(params: {
+  image?: string;
+  weight: number;
+  goalCalories: number;
+  todayCalories: number;
+}): Promise<FoodAnalysis> {
+  const res = await fetch(`${API_BASE}/analyze-food`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(params),
+  });
+  if (!res.ok) {
+    const err = await res.text().catch(() => res.statusText);
+    throw new Error(err || `HTTP ${res.status}`);
+  }
+  return res.json() as Promise<FoodAnalysis>;
+}
+
 // ─── API call ─────────────────────────────────────────────────────────────────
 
 export async function sendChatMessage(
